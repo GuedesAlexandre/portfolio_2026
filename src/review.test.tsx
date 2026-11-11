@@ -16,7 +16,7 @@ it('scrolle jusqu’à la section demandée par le lien (#kelp)', () => {
   expect((spy.mock.contexts[0] as Element).id).toBe('kelp');
 });
 
-it('marque la page sans 3D pour libérer la place du clavier', () => {
+it('marque la page sans 3D pour libérer la place de la 3D', () => {
   vi.spyOn(caps, 'hasWebGL').mockReturnValue(false);
   const { container } = render(<App />);
   expect(container.querySelector('.site.no-3d')).not.toBeNull();

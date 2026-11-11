@@ -4,7 +4,7 @@ import { sectionProgress } from '../story/sectionMath';
 
 const WORDS = MANIFESTO.split(' ');
 
-/** La phrase s'éclaire mot à mot pendant que le clavier la tape. */
+/** La phrase s'éclaire mot à mot au fil du scroll. */
 export const Manifesto = forwardRef<HTMLElement>(function Manifesto(_, ref) {
   const [lit, setLit] = useState(WORDS.length);
   useEffect(() => {

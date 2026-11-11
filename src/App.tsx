@@ -10,7 +10,7 @@ import { Manifesto } from './sections/Manifesto';
 import { Projects } from './sections/Projects';
 import './styles/v3.css';
 
-const KeyboardStage = lazy(() => import('./keyboard/KeyboardStage').then((m) => ({ default: m.KeyboardStage })));
+const ParticleStage = lazy(() => import('./particles/ParticleStage').then((m) => ({ default: m.ParticleStage })));
 
 /** Les sections sont rendues après que le navigateur a tenté d'aller au #fragment : on le refait. */
 function scrollToHash() {
@@ -42,7 +42,7 @@ export default function App() {
       {show3d && (
         <SafeBoundary>
           <Suspense fallback={null}>
-            <KeyboardStage progress={progress} compact={compact} onReady={ready.resolve3d} />
+            <ParticleStage progress={progress} compact={compact} onReady={ready.resolve3d} />
           </Suspense>
         </SafeBoundary>
       )}

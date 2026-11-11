@@ -8,8 +8,8 @@
 .nav nav a { text-decoration: none; }
 .nav nav a:hover { text-decoration: underline; }
 
-/* ---------- Canvas du clavier (derrière le texte) ---------- */
-.keyboard-stage { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+/* ---------- Canvas des particules (derrière le texte) ---------- */
+.particle-stage { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 main, .contact { position: relative; z-index: 1; }
 
 /* ---------- Notes de marge manuscrites ---------- */
@@ -89,7 +89,7 @@ main, .contact { position: relative; z-index: 1; }
 .contact-foot { margin: 0; font-size: 13px; color: var(--dim); }
 
 /* ---------- Mobile ---------- */
-/* Sans 3D, sur écran bas ou étroit : plus de sections fixées ni de place réservée au clavier */
+/* Sans 3D, sur écran bas ou étroit : plus de sections fixées ni de place réservée à la 3D */
 .no-3d .manifesto, .no-3d .project { min-height: 0; }
 .no-3d .manifesto-sticky, .no-3d .project-sticky { position: static; height: auto; min-height: 0; padding-block: 14vh 4vh; }
 
@@ -111,7 +111,7 @@ main, .contact { position: relative; z-index: 1; }
   .kv div { grid-template-columns: 7em 1fr; }
 }
 
-/* Lisibilité du texte posé sur le clavier */
+/* Lisibilité du texte posé sur la 3D */
 .hero-title, .hero-tagline, .hero-down, .manifesto-text, .project-text { text-shadow: 0 0 28px rgb(11 11 12 / 0.95), 0 0 8px rgb(11 11 12 / 0.9); }
 
 /* ---------- Loader ---------- */
