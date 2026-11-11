@@ -26,36 +26,6 @@ function bands(c: CanvasRenderingContext2D, top: string, bottom: string, split =
   for (let y = sy; y < sy + 10; y++) for (let x = (y % 2); x < SCENE_W; x += 2 + (y - sy) / 3) px(c, x, y, top);
 }
 
-/* ---------- MovieRecom : cinéma la nuit, écran qui scintille ---------- */
-const cinema: Draw = (c, t) => {
-  rect(c, 0, 0, SCENE_W, SCENE_H, C.bg);
-  const flicker = 0.85 + Math.sin(t * 23) * 0.05 + Math.sin(t * 7.3) * 0.06;
-  // faisceau du projecteur
-  c.globalAlpha = 0.18 * flicker;
-  for (let y = 4; y < 60; y++) { const w = 4 + (y - 4) * 1.6; rect(c, 128 - w / 2 + (y - 4) * 0.0, y, w, 1, C.light); }
-  c.globalAlpha = 1;
-  for (let i = 0; i < 26; i++) {
-    const y = 8 + rnd(i) * 50, spread = 2 + (y - 4) * 1.6;
-    px(c, 128 + (rnd(i + 4) - 0.5) * spread + Math.sin(t + i) * 2, y + Math.sin(t * 0.7 + i) * 2, C.grey);
-  }
-  // écran
-  rect(c, 66, 58, 124, 46, C.stone);
-  rect(c, 68, 60, 120, 42, flicker > 0.86 ? C.dim : C.mid);
-  // le film : un horizon qui défile
-  const off = (t * 20) % 40;
-  for (let x = 0; x < 120; x++) { const h = 6 + Math.round(Math.sin((x + off) * 0.15) * 3 + Math.sin((x + off) * 0.05) * 4); rect(c, 68 + x, 102 - h, 1, h, C.shade); }
-  rect(c, 150 + Math.sin(t * 0.5) * 20, 70, 8, 8, C.orange);
-  // rangées de sièges et spectateurs
-  for (let row = 0; row < 3; row++) {
-    const y = 112 + row * 11, col = row === 2 ? C.night : C.shade;
-    for (let s = -1; s < 15; s++) {
-      const x = s * 18 + (row % 2) * 9;
-      rect(c, x, y, 15, 12, col);
-      if (rnd(s * 3 + row) > 0.55) { rect(c, x + 4, y - 7, 7, 7, C.night); rect(c, x + 3, y - 1, 9, 2, C.night); }
-    }
-  }
-};
-
 /* ---------- Spring Boot Admin : une ville de serveurs veillée par une tour radar ---------- */
 const watch: Draw = (c, t) => {
   bands(c, C.night, C.deep, 0.55);
@@ -86,6 +56,6 @@ const watch: Draw = (c, t) => {
   rect(c, 0, SCENE_H - 3, SCENE_W, 3, C.night);
 };
 
-/** Azathro (vrais assets du jeu) et Kelp (session de l'appli rejouée) ont leurs propres scènes. */
-export type PixelId = Exclude<ProjectId, 'azathro' | 'kelp'>;
-export const SCENES: Record<PixelId, Draw> = { movierecom: cinema, sba: watch };
+/** Azathro (vrais assets du jeu), Kelp et MovieRecom (sessions des applis rejouées) ont leurs propres scènes. */
+export type PixelId = Exclude<ProjectId, 'azathro' | 'kelp' | 'movierecom'>;
+export const SCENES: Record<PixelId, Draw> = { sba: watch };
