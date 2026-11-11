@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Dev } from './Dev';
+import { Bug } from './Bug';
+import { Runner } from './Runner';
 
 const NOTES = [
   { t: 'git pull', x: -230, y: -120 }, { t: 'mvn clean install', x: 150, y: -150 },
@@ -8,7 +9,7 @@ const NOTES = [
   { t: 'SELECT 1;', x: 20, y: -200 },
 ];
 
-/** Écran de chargement : des commandes manuscrites apparaissent, le petit dev arrive en marchant. */
+/** Écran de chargement : le dev court après un bug pendant que la page se prépare. */
 export function Loader({ whenReady, onDone, minMs = 2200, maxMs = 7000 }: {
   whenReady: Promise<unknown>; onDone: () => void; minMs?: number; maxMs?: number;
 }) {
@@ -30,13 +31,19 @@ export function Loader({ whenReady, onDone, minMs = 2200, maxMs = 7000 }: {
   if (gone) return null;
   return (
     <div className={`loader${leaving ? ' is-leaving' : ''}`}>
-      <div className="loader-stage" aria-hidden="true">
-        {NOTES.map((n, i) => (
-          <span key={n.t} className="loader-note" style={{ transform: `translate(${n.x}px, ${n.y}px) rotate(${((i % 3) - 1) * 4}deg)`, animationDelay: `${0.15 + i * 0.22}s` }}>{n.t}</span>
-        ))}
-        <Dev walking className="loader-dev" />
+      <div className="chase" aria-hidden="true">
+        <div className="chase-notes">
+          {NOTES.map((n, i) => (
+            <span key={n.t} className="loader-note" style={{ left: `${10 + i * 13}%`, top: `${i % 2 ? 66 + ((i * 7) % 14) : 12 + ((i * 11) % 16)}%`, animationDelay: `${-((i * 1.7) % 6)}s` }}>{n.t}</span>
+          ))}
+        </div>
+        <div className="chase-ground" />
+        <div className="chase-actors">
+          <Runner className="chase-runner" />
+          <div className="chase-bug"><span className="bug-shout">un bug !</span><Bug /></div>
+        </div>
       </div>
-      <p className="loader-status" role="status">chargement… on branche le clavier</p>
+      <p className="loader-status" role="status">chargement… chasse au bug en cours</p>
     </div>
   );
 }

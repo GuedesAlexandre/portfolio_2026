@@ -102,31 +102,35 @@ main, .contact { position: relative; z-index: 1; }
   background-size: 72px 72px; transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .loader.is-leaving { opacity: 0; pointer-events: none; }
-.loader-stage { position: relative; width: 1px; height: 1px; display: grid; place-items: center; }
+.chase { position: absolute; inset: 0; overflow: hidden; }
+.chase-notes { position: absolute; inset: 0; }
 .loader-note {
-  position: absolute; white-space: nowrap; font: 400 16px var(--hand); color: var(--accent);
-  opacity: 0; animation: note-in 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: absolute; white-space: nowrap; font: 400 16px var(--hand); color: var(--accent); opacity: 0.55;
+  animation: drift 6s linear infinite;
 }
-@keyframes note-in { 0% { opacity: 0; filter: blur(4px); } 25% { opacity: 1; filter: blur(0); } 75% { opacity: 1; } 100% { opacity: 0.25; } }
-.loader-dev { position: absolute; width: 96px; height: 192px; animation: dev-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-@keyframes dev-in { from { transform: translateX(-46vw); } to { transform: translateX(0); } }
-.loader-status { position: absolute; bottom: 14vh; margin: 0; font: 400 italic 20px var(--serif); color: var(--dim); }
-
-/* Le petit dev : marche (deux poses de jambes) et vapeur du café */
-.dev .dev-legs-b { display: none; }
-.dev.is-walking .dev-legs-a { animation: leg-a 0.44s steps(1) infinite; }
-.dev.is-walking .dev-legs-b { display: inline; animation: leg-b 0.44s steps(1) infinite; }
-.dev.is-walking .dev-body { animation: bob 0.22s ease-in-out infinite alternate; }
+@keyframes drift { from { transform: translateX(30vw) rotate(-3deg); opacity: 0; } 15% { opacity: 0.6; } 85% { opacity: 0.6; } to { transform: translateX(-60vw) rotate(-3deg); opacity: 0; } }
+.chase-ground {
+  position: absolute; left: 0; right: 0; top: calc(50% + 87px); height: 2px;
+  background: repeating-linear-gradient(90deg, rgb(237 232 223 / 0.55) 0 26px, transparent 26px 44px, rgb(237 232 223 / 0.3) 44px 52px, transparent 52px 70px);
+  animation: ground 0.5s linear infinite;
+}
+@keyframes ground { to { background-position: -70px 0; } }
+.chase-actors { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.chase-runner { position: absolute; width: 140px; height: 220px; left: -150px; top: -124px; }
+.chase-bug { position: absolute; left: 34px; top: 42px; animation: scurry 1.4s ease-in-out infinite; }
+.chase-bug .bug { width: 72px; height: 48px; display: block; }
+.bug-shout { position: absolute; bottom: 56px; left: -6px; white-space: nowrap; font: 400 15px var(--hand); color: var(--accent); transform: rotate(-6deg); }
+@keyframes scurry { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(26px, -6px); } 60% { transform: translate(8px, 0); } }
+.bug .bug-legs-a { animation: leg-a 0.16s steps(1) infinite; }
+.bug .bug-legs-b { opacity: 0; animation: leg-b 0.16s steps(1) infinite; }
 @keyframes leg-a { 0% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes leg-b { 0% { opacity: 0; } 50% { opacity: 1; } }
-@keyframes bob { from { transform: translateY(0); } to { transform: translateY(-1.5px); } }
-.dev .dev-steam { animation: steam 1.6s ease-in-out infinite; }
-@keyframes steam { 0%, 100% { opacity: 0.2; transform: translateY(1px); } 50% { opacity: 1; transform: translateY(-1px); } }
+.loader-status { position: absolute; bottom: 14vh; margin: 0; font: 400 italic 20px var(--serif); color: var(--dim); }
 
 /* Après le chargement, le dev reste au pied du titre */
-.hero-dev { position: absolute; z-index: 2; width: clamp(40px, 4vw, 64px); height: auto; left: 50%; top: 50%; transform: translate(-37vw, 1vw); }
+.hero-dev { position: absolute; z-index: 2; width: clamp(56px, 5.5vw, 96px); height: auto; left: 50%; top: 50%; transform: translate(-40vw, -2vw); }
 @media (max-width: 767px) { .hero-dev { transform: translate(-44vw, -8vw); } }
 @media (prefers-reduced-motion: reduce) {
-  .loader-note, .loader-dev, .dev * { animation: none !important; opacity: 1; }
-  .dev .dev-legs-b { display: none !important; }
+  .loader-note, .chase-ground, .chase-bug, .bug * { animation: none !important; }
+  .bug .bug-legs-b { opacity: 0; }
 }
