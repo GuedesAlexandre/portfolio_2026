@@ -40,5 +40,5 @@ export function GeneticScene() {
     io.observe(canvas);
     return () => { ro.disconnect(); io.disconnect(); cancelAnimationFrame(raf); };
   }, []);
-  return <canvas ref={ref} className="kelp-scene" aria-hidden="true" />;
+  return <canvas ref={ref} className="scene-canvas" aria-hidden="true" />;
 }

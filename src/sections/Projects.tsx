@@ -1,7 +1,7 @@
 import { forwardRef, useState } from 'react';
 import { AzathroScene } from '../scenes/AzathroScene';
 import { KelpScene } from '../scenes/KelpScene';
-import { MovieScene } from '../scenes/MovieScene';
+import { CatalogueScene } from '../scenes/CatalogueScene';
 import { GeneticScene } from '../scenes/GeneticScene';
 import { PROJECTS, type Project } from '../story/projects';
 
@@ -10,7 +10,7 @@ function ProjectBlock({ p }: { p: Project }) {
   return (
     <article id={p.id} className={`project project-${p.id}`}>
       <div className="project-sticky">
-        <div className="project-painting">{p.id === 'azathro' ? <AzathroScene /> : p.id === 'kelp' ? <KelpScene /> : p.id === 'movierecom' ? <MovieScene /> : <GeneticScene />}</div>
+        <div className="project-painting">{p.id === 'azathro' ? <AzathroScene /> : p.id === 'kelp' ? <KelpScene /> : p.id === 'movierecom' ? <CatalogueScene /> : <GeneticScene />}</div>
         <div className="project-text">
           <p className="project-context">{p.context}</p>
           <h3 className="project-title">{p.title}</h3>
