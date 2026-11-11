@@ -1,0 +1,17 @@
+:root {
+  --ink: #ede6d6;
+  --bar: #050505;
+  --sub: #f2c94c;
+  --paper: #fafaf7;
+  --paper-ink: #141414;
+  --font-hand: 'Homemade Apple', cursive;
+  --font-ui: 'Jost Variable', system-ui, sans-serif;
+  --font-script: 'Courier Prime', 'Courier New', monospace;
+  --bar-h: 15.5vh;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bar); color: var(--ink); font-family: var(--font-ui); }
+::selection { background: var(--sub); color: var(--bar); }
+:focus-visible { outline: 1.5px solid var(--sub); outline-offset: 3px; }
+a { color: inherit; }
