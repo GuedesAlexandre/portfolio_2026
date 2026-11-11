@@ -9,7 +9,7 @@ export function Contact() {
       <ul className="contact-links">
         {CONTACT.links.map((l) => <li key={l.label}><a href={l.href}>{l.label} <ArrowIcon /></a></li>)}
       </ul>
-      <p className="contact-foot">Alexandre — 2026</p>
+      <p className="contact-foot">Alexandre, 2026</p>
     </footer>
   );
 }

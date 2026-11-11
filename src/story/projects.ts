@@ -35,7 +35,7 @@ export const PROJECTS: Project[] = [
     summary: 'Un « conseil du soir » : plutôt qu’un catalogue à faire défiler, on décrit son envie du moment et un LLM local négocie avec toi le film à regarder.',
     details: [
       'llama.cpp intégré en Java via java-llama.cpp, modèle Qwen2.5-7B-Instruct au format GGUF, sur CPU comme sur GPU.',
-      'Stack imposée par le cours de Java avancé : Helidon SE, jOOQ, SQLite, Svelte et Bits UI — Flyway interdit.',
+      'Stack imposée par le cours de Java avancé : Helidon SE, jOOQ, SQLite, Svelte et Bits UI. Flyway interdit.',
     ],
     stack: ['Helidon SE', 'jOOQ', 'SQLite', 'Svelte', 'Qwen2.5-7B'],
     note: 'un LLM, en local',

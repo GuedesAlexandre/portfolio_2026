@@ -1,6 +1,6 @@
-export const TAGLINE = 'Apprenti ingénieur logiciel — je rends simple ce qui est complexe.';
+export const TAGLINE = 'Apprenti ingénieur logiciel. Je rends simple ce qui est complexe.';
 export const MANIFESTO =
-  'Je prends un truc complexe — un cluster Kubernetes, un LLM, un moteur de jeu — et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
+  'Je prends un truc complexe, un cluster Kubernetes, un LLM, un moteur de jeu, et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
 export const STACK = [
   { part: 'Front', value: 'React, Angular, TypeScript' },
   { part: 'Back', value: 'Java, Spring Boot' },

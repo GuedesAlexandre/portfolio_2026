@@ -32,7 +32,7 @@ main, .contact { position: relative; z-index: 1; }
 /* ---------- Manifeste ---------- */
 .manifesto { position: relative; min-height: 260vh; }
 .manifesto-sticky { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; padding: 0 var(--gutter); text-align: center; }
-.manifesto-text { margin: 0 auto; max-width: 19ch; font: 400 clamp(36px, 4.6vw, 76px) / 1.08 var(--serif); letter-spacing: -0.01em; position: relative; z-index: 7; }
+.manifesto-text { margin: 0 auto; max-width: 30ch; font: 400 clamp(36px, 4.6vw, 76px) / 1.08 var(--serif); letter-spacing: -0.01em; position: relative; z-index: 7; }
 .manifesto-text span { color: #2c2b29; transition: color 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 .manifesto-text span.is-lit { color: var(--ink); }
 .manifesto .n-4 { right: 10%; top: 16%; transform: rotate(5deg); }
