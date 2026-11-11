@@ -1,16 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Bug } from './Bug';
-import { Runner } from './Runner';
+import { SIGNATURE } from './signature';
 
-const NOTES = [
-  { t: 'git pull', x: -230, y: -120 }, { t: 'mvn clean install', x: 150, y: -150 },
-  { t: 'kubectl get pods', x: -260, y: 60 }, { t: 'npm run dev', x: 190, y: 40 },
-  { t: 'docker compose up', x: -120, y: 170 }, { t: './gradlew build', x: 120, y: 160 },
-  { t: 'SELECT 1;', x: 20, y: -200 },
-];
-
-/** Écran de chargement : le dev court après un bug pendant que la page se prépare. */
-export function Loader({ whenReady, onDone, minMs = 2200, maxMs = 7000 }: {
+/** Écran de chargement : « Alexandre » se trace à la plume, puis laisse place au titre. */
+export function Loader({ whenReady, onDone, minMs = 3600, maxMs = 7000 }: {
   whenReady: Promise<unknown>; onDone: () => void; minMs?: number; maxMs?: number;
 }) {
   const [leaving, setLeaving] = useState(false);
@@ -31,19 +23,12 @@ export function Loader({ whenReady, onDone, minMs = 2200, maxMs = 7000 }: {
   if (gone) return null;
   return (
     <div className={`loader${leaving ? ' is-leaving' : ''}`}>
-      <div className="chase" aria-hidden="true">
-        <div className="chase-notes">
-          {NOTES.map((n, i) => (
-            <span key={n.t} className="loader-note" style={{ left: `${10 + i * 13}%`, top: `${i % 2 ? 66 + ((i * 7) % 14) : 12 + ((i * 11) % 16)}%`, animationDelay: `${-((i * 1.7) % 6)}s` }}>{n.t}</span>
-          ))}
-        </div>
-        <div className="chase-ground" />
-        <div className="chase-actors">
-          <Runner className="chase-runner" />
-          <div className="chase-bug"><span className="bug-shout">un bug !</span><Bug /></div>
-        </div>
-      </div>
-      <p className="loader-status" role="status">chargement… chasse au bug en cours</p>
+      <svg className="signature" viewBox={`0 0 ${SIGNATURE.width} ${SIGNATURE.height}`} aria-hidden="true">
+        {SIGNATURE.glyphs.map((d, i) => (
+          <path key={i} d={d} pathLength="1" style={{ animationDelay: `${0.2 + i * 0.24}s, ${0.2 + SIGNATURE.glyphs.length * 0.24 + 0.2}s` }} />
+        ))}
+      </svg>
+      <p className="sr-only" role="status">chargement</p>
     </div>
   );
 }

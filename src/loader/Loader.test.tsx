@@ -22,3 +22,10 @@ it('ne bloque jamais la page plus de maxMs', async () => {
   await act(async () => { await vi.advanceTimersByTimeAsync(3000 + 1200); });
   expect(onDone).toHaveBeenCalledTimes(1);
 });
+
+it('trace le nom à la plume pendant le chargement', () => {
+  const { container } = render(<Loader whenReady={new Promise(() => {})} onDone={() => {}} />);
+  const path = container.querySelector('svg.signature path');
+  expect(path).not.toBeNull();
+  expect(path).toHaveAttribute('pathLength', '1');
+});

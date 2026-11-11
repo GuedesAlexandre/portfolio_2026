@@ -52,7 +52,7 @@ export default function App() {
         <nav aria-label="sections"><a href="#projets">projets</a><a href="#parcours">parcours</a><a href="#contact">contact</a></nav>
       </header>
       <main>
-        <Hero />
+        <Hero revealed={!loading} />
         <Manifesto ref={manifesto} />
         <Projects ref={projects} />
         <Journey />
