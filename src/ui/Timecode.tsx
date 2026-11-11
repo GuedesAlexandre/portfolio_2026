@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { prefersReducedMotion } from '../story/capabilities';
 
 /** Timecode + profondeur. L'aiguille de profondeur a de l'inertie : elle dépasse un peu puis se pose. */
 export function Timecode({ timecode, depthMeters, label }: { timecode: string; depthMeters: number; label: string }) {
@@ -9,7 +10,7 @@ export function Timecode({ timecode, depthMeters, label }: { timecode: string; d
 
   useEffect(() => {
     const el = depthRef.current!;
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduced = prefersReducedMotion();
     to.current = reduced
       ? (v) => { value.current.d = v; el.textContent = fmt(v); }
       : gsap.quickTo(value.current, 'd', { duration: 0.9, ease: 'elastic.out(1, 0.6)', onUpdate: () => { el.textContent = fmt(value.current.d); } });

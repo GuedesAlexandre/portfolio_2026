@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ChapterId } from './chapters';
 import { parseHash } from './hash';
+import { prefersReducedMotion as reduced } from './capabilities';
 import { chapterProgress, progressToState } from './timeline';
 
-const reduced = () => typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
 /** Le scroll du document est la timeline du film. */
