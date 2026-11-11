@@ -1,14 +1,13 @@
 import { forwardRef, useState } from 'react';
-import { Backdrop } from '../scenes/Backdrop';
-import { hasWebGL } from '../story/capabilities';
+import { PixelScene } from '../scenes/PixelScene';
 import { PROJECTS, type Project } from '../story/projects';
 
-function ProjectBlock({ p, with3d }: { p: Project; with3d: boolean }) {
+function ProjectBlock({ p }: { p: Project }) {
   const [open, setOpen] = useState(false);
   return (
     <article id={p.id} className={`project project-${p.id}`}>
       <div className="project-sticky">
-        <div className="project-painting"><Backdrop id={p.id} enabled={with3d} /></div>
+        <div className="project-painting"><PixelScene id={p.id} /></div>
         <div className="project-text">
           <p className="project-context">{p.context}</p>
           <h3 className="project-title">{p.title}</h3>
@@ -29,11 +28,10 @@ function ProjectBlock({ p, with3d }: { p: Project; with3d: boolean }) {
 }
 
 export const Projects = forwardRef<HTMLElement>(function Projects(_, ref) {
-  const [with3d] = useState(hasWebGL);
   return (
     <section id="projets" className="projects" ref={ref} aria-labelledby="projets-title">
       <h2 id="projets-title" className="section-title">Projets</h2>
-      {PROJECTS.map((p) => <ProjectBlock key={p.id} p={p} with3d={with3d} />)}
+      {PROJECTS.map((p) => <ProjectBlock key={p.id} p={p} />)}
     </section>
   );
 });
