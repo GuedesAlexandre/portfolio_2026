@@ -6,8 +6,8 @@ function fakeCtx() {
   return { calls, ctx: { fillStyle: '', globalAlpha: 1, fillRect: (...a: number[]) => { if (a.some((v) => !Number.isFinite(v))) throw new Error('NaN'); calls.push(a); } } as unknown as CanvasRenderingContext2D };
 }
 
-it('a une scène pour chaque projet sauf Azathro (vrais assets du jeu)', () => {
-  expect(Object.keys(SCENES).sort()).toEqual(PROJECTS.map((p) => p.id).filter((id) => id !== 'azathro').sort());
+it('a une scène pixel pour chaque projet sauf Azathro et Kelp (scènes dédiées)', () => {
+  expect(Object.keys(SCENES).sort()).toEqual(PROJECTS.map((p) => p.id).filter((id) => id !== 'azathro' && id !== 'kelp').sort());
 });
 
 it('dessine chaque scène à plusieurs instants sans valeur invalide', () => {

@@ -26,41 +26,6 @@ function bands(c: CanvasRenderingContext2D, top: string, bottom: string, split =
   for (let y = sy; y < sy + 10; y++) for (let x = (y % 2); x < SCENE_W; x += 2 + (y - sy) / 3) px(c, x, y, top);
 }
 
-/* ---------- Kelp : forêt d'algues, alvéoles reliées par des câbles ---------- */
-const HEX = [[150, 46], [186, 30], [214, 60], [178, 86], [138, 82]];
-const CABLES = [[0, 1], [0, 3], [0, 4], [1, 2], [3, 2]];
-function hex(c: CanvasRenderingContext2D, cx: number, cy: number, col: string) {
-  const r = 9;
-  for (let a = 0; a < 6; a++) {
-    const a1 = (Math.PI / 3) * a, a2 = (Math.PI / 3) * (a + 1);
-    for (let s = 0; s <= 1; s += 0.08) px(c, cx + Math.cos(a1 + (a2 - a1) * s) * r, cy + Math.sin(a1 + (a2 - a1) * s) * r, col);
-  }
-}
-const kelp: Draw = (c, t) => {
-  bands(c, C.deep, C.bg, 0.45);
-  for (let i = 0; i < 40; i++) px(c, rnd(i) * SCENE_W, (rnd(i + 9) * SCENE_H + t * (6 + rnd(i) * 8)) % SCENE_H, C.stone);
-  for (let k = 0; k < 9; k++) {
-    const x0 = 10 + k * 30 + rnd(k) * 14, h = 70 + rnd(k + 3) * 60, col = k % 2 ? C.stone : C.mid;
-    for (let y = 0; y < h; y++) {
-      const sway = Math.sin(y * 0.07 + t * 1.3 + k) * (y / h) * 6;
-      const x = x0 + sway, yy = SCENE_H - y;
-      rect(c, x, yy, 2, 1, col);
-      if (y % 9 === 0 && y > 6) rect(c, x + (y % 18 ? 2 : -4), yy, 4, 1, col);
-    }
-  }
-  CABLES.forEach(([a, b], i) => {
-    const [x1, y1] = HEX[a], [x2, y2] = HEX[b];
-    for (let s = 0; s <= 1; s += 0.025) px(c, x1 + (x2 - x1) * s, y1 + (y2 - y1) * s, C.ember);
-    const p = (t * 0.6 + i * 0.2) % 1;
-    rect(c, x1 + (x2 - x1) * p - 1, y1 + (y2 - y1) * p - 1, 2, 2, C.orange);
-  });
-  HEX.forEach(([x, y], i) => hex(c, x, y, Math.sin(t * 2 + i) > 0.6 ? C.cream : C.orange));
-  for (let i = 0; i < 18; i++) {
-    const y = SCENE_H - ((t * (10 + rnd(i) * 10) + rnd(i + 2) * SCENE_H) % SCENE_H);
-    px(c, rnd(i + 5) * SCENE_W + Math.sin(t * 3 + i) * 1.5, y, C.light);
-  }
-};
-
 /* ---------- MovieRecom : cinéma la nuit, écran qui scintille ---------- */
 const cinema: Draw = (c, t) => {
   rect(c, 0, 0, SCENE_W, SCENE_H, C.bg);
@@ -121,5 +86,6 @@ const watch: Draw = (c, t) => {
   rect(c, 0, SCENE_H - 3, SCENE_W, 3, C.night);
 };
 
-/** Azathro a sa propre scène, faite avec les vrais assets du jeu (AzathroScene). */
-export const SCENES: Record<Exclude<ProjectId, 'azathro'>, Draw> = { kelp, movierecom: cinema, sba: watch };
+/** Azathro (vrais assets du jeu) et Kelp (session de l'appli rejouée) ont leurs propres scènes. */
+export type PixelId = Exclude<ProjectId, 'azathro' | 'kelp'>;
+export const SCENES: Record<PixelId, Draw> = { movierecom: cinema, sba: watch };

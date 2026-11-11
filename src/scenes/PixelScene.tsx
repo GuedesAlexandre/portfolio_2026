@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react';
-import type { ProjectId } from '../story/projects';
-import { SCENES, SCENE_H, SCENE_W } from './scenes';
+import { SCENES, SCENE_H, SCENE_W, type PixelId } from './scenes';
 
 /** Fond animé en pixel art ; ne tourne que lorsqu'il est à l'écran. */
-export function PixelScene({ id }: { id: Exclude<ProjectId, 'azathro'> }) {
+export function PixelScene({ id }: { id: PixelId }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current!;
