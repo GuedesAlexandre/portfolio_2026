@@ -9,7 +9,7 @@ it('affiche le nom en titre principal', () => {
 
 it('présente les 4 projets', () => {
   render(<App />);
-  for (const t of ['Kelp', 'MovieRecom', 'Azathro', 'Spring Boot Admin']) {
+  for (const t of ['Kelp', 'MovieRecom', 'Azathro', 'Déserts médicaux']) {
     expect(screen.getByRole('heading', { level: 3, name: t })).toBeInTheDocument();
   }
 });

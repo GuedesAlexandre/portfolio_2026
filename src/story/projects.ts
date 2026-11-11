@@ -1,4 +1,4 @@
-export type ProjectId = 'kelp' | 'movierecom' | 'azathro' | 'sba';
+export type ProjectId = 'kelp' | 'movierecom' | 'azathro' | 'deserts';
 
 export interface Project {
   id: ProjectId;
@@ -56,18 +56,18 @@ export const PROJECTS: Project[] = [
     showsCapture: true,
   },
   {
-    id: 'sba',
-    title: 'Spring Boot Admin',
-    context: 'Alternance · BPCE SI',
-    summary: 'Une instance d’observabilité centralisée pour suivre l’état des applications Spring Boot de la DSI de BPCE Factor depuis un seul endroit.',
+    id: 'deserts',
+    title: 'Déserts médicaux',
+    context: 'ESIEE Paris · projet pluridisciplinaire · en équipe',
+    summary: 'Où construire les hôpitaux de France ? Un algorithme génétique en C choisit, parmi les 34 437 communes de métropole, où placer des hôpitaux pour que chacun en ait un à moins de 10 km, au moindre coût.',
     details: [
-      'Mise en place de l’instance Spring Boot Admin.',
-      'Intégration SSO / OAuth2.',
-      'Découverte native des applications dans Kubernetes.',
-      'Projet interne : description seule, aucune capture.',
+      'Fitness : population couverte, moins 5 000 points par hôpital construit, plus un bonus pour les CHRU des grandes villes.',
+      'Génome de taille variable (malloc / realloc) : l’algorithme ferme de lui-même les hôpitaux qui ne servent à rien.',
+      'Sélection par tournoi, 800 individus, jusqu’à 1 000 générations, mutation de 0,30 à 0,05, immigrants et redémarrages.',
+      'Meilleure solution trouvée : 1 299 hôpitaux dont 2 CHRU, exportée en CSV puis rendue en carte et en PDF.',
     ],
-    stack: ['Spring Boot Admin', 'OAuth2', 'Kubernetes'],
-    note: '/actuator/health',
+    stack: ['C', 'MLV', 'Python', 'GeoJSON'],
+    note: 'fitness ↑',
     showsCapture: false,
   },
 ];
