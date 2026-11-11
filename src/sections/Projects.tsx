@@ -4,8 +4,9 @@ import { PROJECTS, type Project } from '../story/projects';
 function ProjectBlock({ p }: { p: Project }) {
   const [open, setOpen] = useState(false);
   return (
-    <article id={p.id} className="project">
-      <div className="project-sticky">
+    <article id={p.id} className={`project project-${p.id}`}>
+      <div className="project-sticky" style={{ '--painting': `url(/paintings/${p.id}.webp)` } as React.CSSProperties}>
+        <div className="project-painting" aria-hidden="true" />
         <div className="project-text">
           <p className="project-context">{p.context}</p>
           <h3 className="project-title">{p.title}</h3>
