@@ -8,8 +8,9 @@
 .nav nav a { text-decoration: none; }
 .nav nav a:hover { text-decoration: underline; }
 
-/* ---------- Canvas du cube ---------- */
-.cube-stage { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+/* ---------- Canvas du clavier (derrière le texte) ---------- */
+.keyboard-stage { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+main, .contact { position: relative; z-index: 1; }
 
 /* ---------- Notes de marge manuscrites ---------- */
 .margin-note {
@@ -90,3 +91,6 @@
   .journey-list li { grid-template-columns: 1fr; gap: 4px; }
   .kv div { grid-template-columns: 7em 1fr; }
 }
+
+/* Lisibilité du texte posé sur le clavier */
+.hero-title, .hero-tagline, .hero-down, .manifesto-text, .project-text { text-shadow: 0 0 28px rgb(11 11 12 / 0.95), 0 0 8px rgb(11 11 12 / 0.9); }

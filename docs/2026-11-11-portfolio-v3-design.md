@@ -10,7 +10,11 @@ Un portfolio qui mélange ses deux références :
 
 Page blanche sur l'histoire : plus de N64, plus de plongée, plus de Lovecraft dans la DA. Restent le contenu (projets, parcours, stack) et la 3D.
 
-## L'objet héros : un Rubik's cube
+## L’objet héros : un clavier mécanique (remplace le Rubik’s cube, demande d’Alexandre)
+
+Clavier 75 % aux couleurs du site (touches sombres, légendes crème, Échap et Entrée orange), placé derrière le texte. Il tape le prénom dans le hero, le manifeste mot à mot, puis le nom de chaque projet.
+
+### (v3 initiale) Rubik’s cube
 
 Rendu net et brillant (pleine résolution, antialiasing — **jamais pixelisé**). Mélangé au départ, il **se résout au fil du scroll** : c'est la phrase d'Alexandre « je rends simple ce qui est complexe » rendue visible. Dans la section projets, le cube résolu tourne pour présenter une face par projet.
 

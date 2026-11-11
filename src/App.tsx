@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { CubeStage } from './cube/CubeStage';
+import { KeyboardStage } from './keyboard/KeyboardStage';
 import { hasWebGL, isCompact, prefersReducedMotion } from './story/capabilities';
 import { useSectionProgress } from './story/useSectionProgress';
 import { Contact } from './sections/Contact';
@@ -19,7 +19,7 @@ export default function App() {
   const [compact] = useState(isCompact);
   return (
     <>
-      {show3d && <CubeStage progress={progress} compact={compact} />}
+      {show3d && <KeyboardStage progress={progress} compact={compact} />}
       <header className="nav">
         <a href="#intro" className="logo" aria-label="accueil">a.</a>
         <nav aria-label="sections"><a href="#projets">projets</a><a href="#parcours">parcours</a><a href="#contact">contact</a></nav>
