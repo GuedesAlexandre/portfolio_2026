@@ -76,10 +76,10 @@ function Rig({ progress, compact }: { progress: Progress; compact: boolean }) {
   return <group ref={g} scale={compact ? 0.3 : 0.6}><Keyboard presses={presses} /></group>;
 }
 
-export function KeyboardStage({ progress, compact }: { progress: Progress; compact: boolean }) {
+export function KeyboardStage({ progress, compact, onReady }: { progress: Progress; compact: boolean; onReady?: () => void }) {
   return (
     <div className="keyboard-stage" aria-hidden="true">
-      <Canvas dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ position: [0, 0, 10], fov: 32 }}>
+      <Canvas dpr={[1, 2]} gl={{ antialias: true, alpha: true }} camera={{ position: [0, 0, 10], fov: 32 }} onCreated={() => requestAnimationFrame(() => requestAnimationFrame(() => onReady?.()))}>
         <ambientLight intensity={0.3} />
         <directionalLight position={[3, 8, 6]} intensity={1.4} />
         <pointLight position={[0, -1, 3]} intensity={18} color="#ff6a1f" distance={12} />
