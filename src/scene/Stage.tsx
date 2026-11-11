@@ -16,6 +16,11 @@ export function Stage({ progressRef, roomExtras, pointer, compact }: {
 }) {
   const [fontsReady, setFontsReady] = useState(false);
   useEffect(() => {
+    const move = (e: PointerEvent) => { pointer.current = { x: (e.clientX / innerWidth) * 2 - 1, y: -((e.clientY / innerHeight) * 2 - 1) }; };
+    addEventListener('pointermove', move, { passive: true });
+    return () => removeEventListener('pointermove', move);
+  }, [pointer]);
+  useEffect(() => {
     Promise.all(FONTS.map((f) => document.fonts.load(f))).finally(() => setFontsReady(true));
   }, []);
 
@@ -25,14 +30,11 @@ export function Stage({ progressRef, roomExtras, pointer, compact }: {
         dpr={compact ? 0.6 : 0.5}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
         camera={{ position: [0.4, 2.5, 8.2], fov: 42, near: 0.1, far: 120 }}
-        onPointerMove={(e) => {
-          pointer.current = { x: (e.clientX / innerWidth) * 2 - 1, y: -((e.clientY / innerHeight) * 2 - 1) };
-        }}
       >
         <CameraRig progressRef={progressRef} />
         {fontsReady && (
           <>
-            <Room>{roomExtras}</Room>
+            <Room draggable={!compact}>{roomExtras}</Room>
             <Surface />
             <Sonar />
             <KelpVoid draggable={!compact} />

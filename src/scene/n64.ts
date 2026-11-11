@@ -40,7 +40,7 @@ export const SET_Y: Record<ChapterId, number> = {
 type V3 = [number, number, number];
 /** Cadrages du storyboard v2, en coordonnées monde. */
 export const SHOTS: Record<ChapterId, { pos: V3; look: V3; fov: number }> = {
-  chambre: { pos: [0.4, 2.5, 8.2], look: [-0.4, 1.3, 0], fov: 42 },
+  chambre: { pos: [0.4, 2.6, 8.4], look: [-0.4, 0.95, 0], fov: 42 },
   surface: { pos: [0, -38.9, 12], look: [0, -36.6, -30], fov: 50 },
   sba: { pos: [0, -66, 0.01], look: [0, -80, 0], fov: 50 },
   kelp: { pos: [-1.6, -119.3, 10.5], look: [2.4, -119.7, 0], fov: 46 },

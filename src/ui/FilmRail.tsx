@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CHAPTERS, type ChapterId } from '../story/chapters';
 
-export function FilmRail({ activeId, onJump }: { activeId: ChapterId; onJump: (id: ChapterId) => void }) {
+export function FilmRail({ activeId, highlight, onJump }: { activeId: ChapterId; highlight?: string | null; onJump: (id: ChapterId) => void }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -12,6 +12,7 @@ export function FilmRail({ activeId, onJump }: { activeId: ChapterId; onJump: (i
               <button
                 type="button"
                 aria-current={c.id === activeId ? 'step' : undefined}
+                className={c.id === highlight ? 'is-hinted' : undefined}
                 onClick={() => { setOpen(false); onJump(c.id); }}
               >
                 <span className="rail-depth">{c.depthLabel}</span>

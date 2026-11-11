@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
+import type * as THREE from 'three';
 import { canvasTexture, labelTexture, mat, SET_Y } from '../n64';
 import type { ChapterId } from '../../story/chapters';
 
@@ -91,7 +92,9 @@ function Tv() {
   );
 }
 
-export function Room({ children }: { children?: React.ReactNode }) {
+export function Room({ children, draggable = false }: { children?: React.ReactNode; draggable?: boolean }) {
+  const consoleRef = useRef<THREE.Group>(null);
+  const drag = useRef<number | null>(null);
   return (
     <group position={[0, SET_Y.chambre, 0]}>
       <ambientLight intensity={0.35} color="#6b5a7a" />
@@ -99,7 +102,20 @@ export function Room({ children }: { children?: React.ReactNode }) {
       <mesh rotation={[-Math.PI / 2, 0, 0]} material={mat('#2a2033')}><planeGeometry args={[30, 20]} /></mesh>
       <mesh position={[0, 5, -3.2]} material={mat('#22192d')}><planeGeometry args={[30, 12]} /></mesh>
       <group position={[-2.9, 0, -1.4]} rotation={[0, 0.18, 0]}><Tv /></group>
-      <group position={[1.9, 0, 0.9]} rotation={[0, -0.35, 0]}><Console /></group>
+      <group
+        ref={consoleRef}
+        position={[1.9, 0, 0.9]}
+        rotation={[0, -0.35, 0]}
+        onPointerDown={draggable ? (e) => { e.stopPropagation(); (e.target as Element).setPointerCapture?.(e.pointerId); drag.current = e.clientX; document.body.style.cursor = 'grabbing'; } : undefined}
+        onPointerMove={draggable ? (e) => {
+          if (drag.current === null) return;
+          consoleRef.current!.rotation.y += (e.clientX - drag.current) * 0.012;
+          drag.current = e.clientX;
+        } : undefined}
+        onPointerUp={draggable ? () => { drag.current = null; document.body.style.cursor = ''; } : undefined}
+        onPointerOver={draggable ? () => { if (drag.current === null) document.body.style.cursor = 'grab'; } : undefined}
+        onPointerOut={draggable ? () => { if (drag.current === null) document.body.style.cursor = ''; } : undefined}
+      ><Console /></group>
       <group position={[0.1, 0.02, 2.6]} rotation={[0, 0.3, 0]}><Controller /></group>
       {children}
     </group>

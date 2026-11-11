@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import type { ChapterId } from '../story/chapters';
 import { CONTACT, CREDITS, INVENTORY, MANIFESTO, STACK } from '../story/about';
 import { PROJECTS, type ProjectId } from '../story/projects';
@@ -7,6 +8,13 @@ import { ArrowIcon } from './ArrowIcon';
 export function Shots({ activeId, onOpenScript, onJump }: {
   activeId: ChapterId; onOpenScript: (id: ProjectId) => void; onJump: (id: ChapterId) => void;
 }) {
+  const torch = useRef<HTMLDivElement>(null);
+  const [talk, setTalk] = useState(0);
+  const onTorch = (e: React.PointerEvent) => {
+    const r = torch.current!.getBoundingClientRect();
+    torch.current!.style.setProperty('--mx', `${e.clientX - r.left}px`);
+    torch.current!.style.setProperty('--my', `${e.clientY - r.top}px`);
+  };
   const on = (id: ChapterId) => `shot shot-${id}${activeId === id ? ' is-on' : ''}`;
   const hidden = (id: ChapterId) => activeId !== id;
   const link = (id: ProjectId) => (
@@ -56,14 +64,22 @@ export function Shots({ activeId, onOpenScript, onJump }: {
           <h2 className="shot-title">MovieRecom</h2>
           <p className="projected-lede">Un « conseil du soir » : on discute avec un LLM local qui négocie avec toi le film à regarder.</p>
           <p className="shot-tags">{PROJECTS.movierecom.tags.join(' · ')}</p>
-          {link('movierecom')}
+          <ol className="negotiation" aria-live="polite">
+            {NEGOTIATION.slice(0, talk).map((l) => <li key={l}>{l}</li>)}
+          </ol>
+          <div className="projected-actions">
+            {talk < NEGOTIATION.length
+              ? <button type="button" className="script-link" onClick={() => setTalk((t) => t + 1)}>{talk === 0 ? 'demander un film' : 'répondre'}</button>
+              : <button type="button" className="script-link" onClick={() => setTalk(0)}>rejouer</button>}
+            {link('movierecom')}
+          </div>
         </div>
         <p className="note">plan subjectif : on est assis au 3e rang</p>
       </section>
 
-      <section className={on('azathro')} aria-hidden={hidden('azathro')} inert={hidden('azathro')}>
+      <section className={on('azathro')} aria-hidden={hidden('azathro')} inert={hidden('azathro')} onPointerMove={onTorch}>
         <p className="note">l’œil suit le curseur</p>
-        <div className="torch-text">
+        <div className="torch-text" ref={torch}>
           <p>Un roguelike de cartes lovecraftien,<br />codé de zéro en Java.</p>
           {link('azathro')}
         </div>
@@ -85,3 +101,9 @@ export function Shots({ activeId, onOpenScript, onJump }: {
     </>
   );
 }
+
+const NEGOTIATION = [
+  '— Un truc qui fait peur, mais pas trop ?',
+  '— Un huis clos dans la neige, années 80 ?',
+  '— Vendu.',
+];

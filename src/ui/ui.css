@@ -157,7 +157,7 @@
 
 .shot-chambre .title-block { left: 50%; top: 7%; }
 .shot-chambre .note-tv { left: 30%; top: 4%; }
-.shot-chambre .note-carts { left: 3%; bottom: 3%; }
+.shot-chambre .note-carts { left: 3%; bottom: 36%; }
 
 .shot-surface { color: #1a2630; }
 .shot-surface .manifesto { left: 8%; right: 8%; top: 10%; text-align: center; font-size: clamp(34px, 4.2vw, 64px); }
@@ -211,3 +211,21 @@
   .shot-generique .credits dt { text-align: center; }
   .contact-links { flex-wrap: wrap; justify-content: center; }
 }
+
+/* ---------- Interactions ---------- */
+.rail button.is-hinted { border-color: rgb(242 201 76 / 0.5); }
+.rail button.is-hinted .rail-label { opacity: 1; color: var(--sub); }
+
+.shot-azathro { pointer-events: auto; }
+.shot-azathro .torch-text {
+  --mx: -999px; --my: -999px; padding: 40px; margin: -40px;
+  -webkit-mask-image: radial-gradient(circle 150px at var(--mx) var(--my), #000 35%, transparent 100%);
+  mask-image: radial-gradient(circle 150px at var(--mx) var(--my), #000 35%, transparent 100%);
+}
+.shot-azathro .torch-text:focus-within { -webkit-mask-image: none; mask-image: none; }
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .shot-azathro .torch-text { -webkit-mask-image: none; mask-image: none; }
+}
+
+.negotiation { list-style: none; margin: 0; padding: 0; font: 400 15px / 1.5 var(--font-script); display: grid; gap: 4px; min-height: 0; }
+.projected-actions { display: flex; gap: 22px; justify-content: center; }

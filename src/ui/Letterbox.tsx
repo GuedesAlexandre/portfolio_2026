@@ -5,8 +5,8 @@ import type { StoryState } from '../story/timeline';
 import { FilmRail } from './FilmRail';
 import { Timecode } from './Timecode';
 
-export function Letterbox({ state, onJump, sound, onToggleSound, children }: {
-  state: StoryState; onJump: (id: ChapterId) => void; sound: boolean; onToggleSound: () => void; children?: ReactNode;
+export function Letterbox({ state, highlight, onJump, sound, onToggleSound, children }: {
+  state: StoryState; highlight?: string | null; onJump: (id: ChapterId) => void; sound: boolean; onToggleSound: () => void; children?: ReactNode;
 }) {
   const ch = CHAPTERS[state.index];
   return (
@@ -16,7 +16,7 @@ export function Letterbox({ state, onJump, sound, onToggleSound, children }: {
         <Timecode timecode={state.timecode} depthMeters={state.depthMeters} label={ch.label} />
         <button type="button" className="sound" aria-pressed={sound} onClick={onToggleSound}>{sound ? 'son activé' : 'son coupé'}</button>
       </header>
-      <FilmRail activeId={state.id} onJump={onJump} />
+      <FilmRail activeId={state.id} highlight={highlight} onJump={onJump} />
       {children}
       <footer className="bar bar-bottom">
         <p className="subtitle" aria-live="polite">{ch.subtitle}</p>
