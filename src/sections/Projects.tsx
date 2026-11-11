@@ -1,4 +1,5 @@
 import { forwardRef, useState } from 'react';
+import { AzathroScene } from '../scenes/AzathroScene';
 import { PixelScene } from '../scenes/PixelScene';
 import { PROJECTS, type Project } from '../story/projects';
 
@@ -7,7 +8,7 @@ function ProjectBlock({ p }: { p: Project }) {
   return (
     <article id={p.id} className={`project project-${p.id}`}>
       <div className="project-sticky">
-        <div className="project-painting"><PixelScene id={p.id} /></div>
+        <div className="project-painting">{p.id === 'azathro' ? <AzathroScene /> : <PixelScene id={p.id} />}</div>
         <div className="project-text">
           <p className="project-context">{p.context}</p>
           <h3 className="project-title">{p.title}</h3>

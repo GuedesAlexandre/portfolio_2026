@@ -91,36 +91,6 @@ const cinema: Draw = (c, t) => {
   }
 };
 
-/* ---------- Azathro : abysses, cartes à la dérive, l'œil ---------- */
-const abyss: Draw = (c, t) => {
-  bands(c, C.night, C.bg, 0.3);
-  for (let i = 0; i < 70; i++) {
-    const tw = Math.sin(t * 2 + i * 1.7) > 0.3;
-    px(c, (rnd(i) * SCENE_W - t * (1 + rnd(i) * 2) + SCENE_W * 4) % SCENE_W, rnd(i + 1) * SCENE_H, tw ? C.dim : C.stone);
-  }
-  // l'œil
-  const cx = 206, cy = 30, blink = (t % 6) > 5.7 ? Math.sin(((t % 6) - 5.7) / 0.3 * Math.PI) : 0;
-  const open = 1 - blink;
-  for (let y = -16; y <= 16; y++) {
-    const half = Math.round(Math.sqrt(Math.max(0, 1 - (y / 16) ** 2)) * 40);
-    if (Math.abs(y) <= 16 * open) rect(c, cx - half, cy + y, half * 2, 1, C.shade);
-  }
-  if (open > 0.3) {
-    const ix = cx + Math.sin(t * 0.6) * 8;
-    for (let y = -9; y <= 9; y++) { const h = Math.round(Math.sqrt(81 - y * y)); if (Math.abs(y) <= 16 * open) rect(c, ix - h, cy + y, h * 2, 1, C.ember); }
-    for (let y = -6; y <= 6; y++) { const h = Math.round(Math.sqrt(36 - y * y)); if (Math.abs(y) <= 16 * open) rect(c, ix - h, cy + y, h * 2, 1, C.orange); }
-    rect(c, ix - 1, cy - 7 * open, 2, 14 * open, C.bg);
-  }
-  // cartes qui dérivent
-  for (let k = 0; k < 6; k++) {
-    const x = (k * 47 + t * (4 + k) + 20) % (SCENE_W + 20) - 10;
-    const y = 100 + Math.sin(t * 0.8 + k * 1.3) * 14 - (k % 2) * 70;
-    rect(c, x, y, 9, 13, C.light);
-    rect(c, x + 1, y + 1, 7, 11, C.cream);
-    rect(c, x + 3, y + 4, 3, 4, k % 3 ? C.bg : C.orange);
-  }
-};
-
 /* ---------- Spring Boot Admin : une ville de serveurs veillée par une tour radar ---------- */
 const watch: Draw = (c, t) => {
   bands(c, C.night, C.deep, 0.55);
@@ -151,4 +121,5 @@ const watch: Draw = (c, t) => {
   rect(c, 0, SCENE_H - 3, SCENE_W, 3, C.night);
 };
 
-export const SCENES: Record<ProjectId, Draw> = { kelp, movierecom: cinema, azathro: abyss, sba: watch };
+/** Azathro a sa propre scène, faite avec les vrais assets du jeu (AzathroScene). */
+export const SCENES: Record<Exclude<ProjectId, 'azathro'>, Draw> = { kelp, movierecom: cinema, sba: watch };

@@ -3,7 +3,7 @@ import type { ProjectId } from '../story/projects';
 import { SCENES, SCENE_H, SCENE_W } from './scenes';
 
 /** Fond animé en pixel art ; ne tourne que lorsqu'il est à l'écran. */
-export function PixelScene({ id }: { id: ProjectId }) {
+export function PixelScene({ id }: { id: Exclude<ProjectId, 'azathro'> }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current!;
