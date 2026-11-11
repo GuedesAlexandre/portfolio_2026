@@ -1,9 +1,17 @@
 import { useState } from 'react';
+import { hasWebGL, prefersReducedMotion } from './story/capabilities';
+import { StaticFilm } from './ui/StaticFilm';
 import { useStoryScroll } from './story/useStoryScroll';
 import { Letterbox } from './ui/Letterbox';
 import './ui/ui.css';
 
 export default function App() {
+  const [cinema] = useState(() => hasWebGL() && !prefersReducedMotion());
+  if (!cinema) return <StaticFilm />;
+  return <Cinema />;
+}
+
+function Cinema() {
   const { state, jumpTo } = useStoryScroll();
   const [sound, setSound] = useState(false);
 
