@@ -205,8 +205,10 @@
   .shot-chambre .title-block { left: 6%; top: 4%; }
   .shot-surface .manifesto { font-size: 30px; top: 6%; }
   .shot-surface .buoys { grid-template-columns: 1fr; gap: 8px; bottom: 16%; }
-  .shot-kelp .title-block { left: 6%; top: 4%; }
-  .shot-movierecom .projected { width: 84%; top: 8%; }
+  .shot-kelp .title-block { left: 6%; right: 6%; top: 4%; }
+  .shot-chambre .note-carts { display: none; }
+  .shot-movierecom .projected { width: 88%; top: 3%; transform: translateX(-50%); color: var(--ink); }
+  .shot-movierecom > .note { display: none; }
   .shot-generique .credits div { grid-template-columns: 1fr; gap: 0; text-align: center; }
   .shot-generique .credits dt { text-align: center; }
   .contact-links { flex-wrap: wrap; justify-content: center; }

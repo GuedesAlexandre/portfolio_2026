@@ -5,6 +5,13 @@ import { CHAPTERS } from '../story/chapters';
 import { GRADE, SHOTS } from './n64';
 
 const ease = (t: number) => t * t * (3 - 2 * t);
+const D = Math.PI / 180;
+/** En portrait, on garde le champ horizontal du cadrage desktop (réf. 1.6) au lieu de rogner les côtés. */
+const fitFov = (fov: number, aspect: number) => {
+  if (aspect >= 1.6) return fov;
+  const h = 2 * Math.atan(Math.tan((fov * D) / 2) * 1.6);
+  return Math.min(100, (2 * Math.atan(Math.tan(h / 2) / aspect)) / D);
+};
 const tmpPos = new THREE.Vector3();
 const tmpLook = new THREE.Vector3();
 const colA = new THREE.Color();
@@ -33,7 +40,7 @@ export function CameraRig({ progressRef }: { progressRef: React.MutableRefObject
     look.current.lerp(tmpLook, k);
     camera.lookAt(look.current);
     const cam = camera as THREE.PerspectiveCamera;
-    cam.fov += (A.fov + (B.fov - A.fov) * t - cam.fov) * k;
+    cam.fov += (fitFov(A.fov + (B.fov - A.fov) * t, cam.aspect) - cam.fov) * k;
     cam.updateProjectionMatrix();
 
     const fog = scene.fog as THREE.Fog;
