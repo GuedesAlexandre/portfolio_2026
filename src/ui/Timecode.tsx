@@ -13,7 +13,7 @@ export function Timecode({ timecode, depthMeters, label }: { timecode: string; d
     const reduced = prefersReducedMotion();
     to.current = reduced
       ? (v) => { value.current.d = v; el.textContent = fmt(v); }
-      : gsap.quickTo(value.current, 'd', { duration: 0.9, ease: 'elastic.out(1, 0.6)', onUpdate: () => { el.textContent = fmt(value.current.d); } });
+      : gsap.quickTo(value.current, 'd', { duration: 0.9, ease: 'back.out(1.6)', onUpdate: () => { el.textContent = fmt(value.current.d); } });
   }, []);
   useEffect(() => { to.current?.(depthMeters); }, [depthMeters]);
 

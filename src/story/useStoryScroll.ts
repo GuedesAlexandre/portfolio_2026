@@ -17,6 +17,9 @@ export function useStoryScroll() {
   }, []);
 
   useEffect(() => {
+    // Dev seulement : ?shot=kelp fige la caméra sur un plan (captures de contrôle).
+    const shot = import.meta.env.DEV ? parseHash('#' + (new URLSearchParams(location.search).get('shot') ?? '')) : null;
+    if (shot) { setProgress(chapterProgress(shot)); return; }
     let raf = 0;
     const read = () => {
       raf = 0;
