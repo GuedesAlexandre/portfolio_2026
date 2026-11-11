@@ -1,6 +1,6 @@
 import { Environment, Lightformer } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { MANIFESTO } from '../story/about';
 import { PROJECTS } from '../story/projects';
@@ -88,7 +88,9 @@ export function KeyboardStage({ progress, compact, onReady }: { progress: Progre
           <Lightformer form="rect" intensity={1.2} position={[-6, 1, 2]} scale={[2, 6, 1]} />
           <Lightformer form="rect" intensity={1.6} color="#ff6a1f" position={[6, -1, -2]} scale={[3, 5, 1]} />
         </Environment>
-        <Rig progress={progress} compact={compact} />
+        <Suspense fallback={null}>
+          <Rig progress={progress} compact={compact} />
+        </Suspense>
       </Canvas>
     </div>
   );

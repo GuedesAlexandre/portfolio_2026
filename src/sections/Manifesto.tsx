@@ -22,7 +22,8 @@ export const Manifesto = forwardRef<HTMLElement>(function Manifesto(_, ref) {
     <section id="manifeste" className="manifesto" ref={ref}>
       <div className="manifesto-sticky">
         <p className="margin-note n-4" aria-hidden="true">O(complexe) → O(simple)</p>
-        <p className="manifesto-text" aria-label={MANIFESTO}>
+        <p className="manifesto-text">
+          <span className="sr-only">{MANIFESTO}</span>
           {WORDS.map((w, i) => <span key={i} aria-hidden="true" className={i < lit ? 'is-lit' : undefined}>{w} </span>)}
         </p>
       </div>

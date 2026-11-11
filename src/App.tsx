@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { KeyboardStage } from './keyboard/KeyboardStage';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SafeBoundary } from './SafeBoundary';
 import { Loader } from './loader/Loader';
 import { hasWebGL, isCompact, prefersReducedMotion } from './story/capabilities';
 import { useSectionProgress } from './story/useSectionProgress';
@@ -9,6 +9,14 @@ import { Journey } from './sections/Journey';
 import { Manifesto } from './sections/Manifesto';
 import { Projects } from './sections/Projects';
 import './styles/v3.css';
+
+const KeyboardStage = lazy(() => import('./keyboard/KeyboardStage').then((m) => ({ default: m.KeyboardStage })));
+
+/** Les sections sont rendues après que le navigateur a tenté d'aller au #fragment : on le refait. */
+function scrollToHash() {
+  const id = decodeURIComponent(location.hash.slice(1));
+  if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
+}
 
 export default function App() {
   const manifesto = useRef<HTMLElement>(null);
@@ -20,14 +28,24 @@ export default function App() {
   const [compact] = useState(isCompact);
   const [loading, setLoading] = useState(true);
   const endLoading = useCallback(() => setLoading(false), []);
+  useEffect(() => {
+    scrollToHash();
+    document.fonts?.ready.then(scrollToHash);
+  }, []);
   const ready = useMemo(() => {
     let resolve3d!: () => void;
     const scene = show3d ? new Promise<void>((r) => { resolve3d = r; }) : Promise.resolve();
     return { done: Promise.all([document.fonts?.ready ?? Promise.resolve(), scene]), resolve3d: () => resolve3d?.() };
   }, [show3d]);
   return (
-    <>
-      {show3d && <KeyboardStage progress={progress} compact={compact} onReady={ready.resolve3d} />}
+    <div className={`site${show3d ? '' : ' no-3d'}`}>
+      {show3d && (
+        <SafeBoundary>
+          <Suspense fallback={null}>
+            <KeyboardStage progress={progress} compact={compact} onReady={ready.resolve3d} />
+          </Suspense>
+        </SafeBoundary>
+      )}
       {loading && <Loader whenReady={ready.done} onDone={endLoading} />}
       <header className="nav">
         <a href="#intro" className="logo" aria-label="accueil">a.</a>
@@ -40,6 +58,6 @@ export default function App() {
         <Journey />
       </main>
       <Contact />
-    </>
+    </div>
   );
 }
