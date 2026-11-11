@@ -1,0 +1,100 @@
+/* ---------- Le film : cadre, bandes, chrome ---------- */
+.timeline-spacer { height: calc(7 * 160vh); }
+
+.film { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+.film > * { pointer-events: auto; }
+
+.bar {
+  position: fixed; left: 0; right: 0; height: var(--bar-h);
+  background: var(--bar); display: grid; align-items: center;
+  padding-inline: clamp(16px, 2.8vw, 40px);
+}
+.bar-top { top: 0; grid-template-columns: 1fr auto 1fr; }
+.bar-bottom { bottom: 0; grid-template-rows: 1fr auto; padding-block: 12px 14px; }
+
+.logo { font-family: var(--font-hand); font-size: 26px; text-decoration: none; justify-self: start; line-height: 1; }
+
+.timecode {
+  margin: 0; font-family: var(--font-script); font-size: 14px; letter-spacing: 0.02em;
+  display: flex; gap: 1.6em; opacity: 0.88; font-variant-numeric: tabular-nums;
+}
+.timecode span:last-child { min-width: 7ch; }
+
+.sound {
+  justify-self: end; background: none; border: 0; color: var(--ink); opacity: 0.65;
+  font: 400 13px var(--font-ui); cursor: pointer; padding: 8px 0;
+}
+.sound:hover, .sound[aria-pressed='true'] { opacity: 1; }
+
+.subtitle {
+  margin: 0; align-self: center; text-align: center; color: var(--sub);
+  font: 500 clamp(17px, 1.6vw, 23px) / 1.4 var(--font-ui); text-wrap: balance;
+  max-width: 62ch; justify-self: center;
+}
+.slug { margin: 0; font: 400 12px var(--font-script); opacity: 0.5; letter-spacing: 0.04em; }
+
+/* ---------- Pellicule ---------- */
+.rail {
+  position: fixed; right: 0; top: var(--bar-h); bottom: var(--bar-h); width: 124px;
+  background: rgb(5 5 5 / 0.88);
+  border-left: 1px solid rgb(237 230 214 / 0.06);
+}
+.rail::before, .rail::after {
+  content: ''; position: absolute; top: 8px; bottom: 8px; width: 8px;
+  background: repeating-linear-gradient(to bottom, rgb(237 230 214 / 0.18) 0 11px, transparent 11px 22px);
+  border-radius: 2px;
+}
+.rail::before { left: 6px; } .rail::after { right: 6px; }
+.rail ol { list-style: none; margin: 0; padding: 18px 20px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+.rail button {
+  display: grid; gap: 4px; width: 100%; text-align: left; padding: 6px 8px;
+  background: none; border: 1px solid transparent; color: var(--ink); cursor: pointer;
+  font-family: var(--font-script);
+}
+.rail-depth { font-size: 11px; opacity: 0.55; }
+.rail-label { font-size: 12px; opacity: 0.78; }
+.rail button:hover .rail-label { opacity: 1; }
+.rail button[aria-current='step'] { border-color: var(--sub); color: var(--sub); }
+.rail button[aria-current='step'] .rail-depth, .rail button[aria-current='step'] .rail-label { opacity: 1; font-weight: 700; }
+.rail-toggle { display: none; }
+
+/* ---------- Plans : texte posé dans l'image ---------- */
+.shot {
+  position: fixed; top: var(--bar-h); bottom: var(--bar-h); left: 0; right: 124px;
+  pointer-events: none; opacity: 0; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.shot.is-on { opacity: 1; }
+.shot.is-on > * { pointer-events: auto; }
+.shot-title { font-family: var(--font-hand); font-weight: 400; margin: 0; line-height: 1.25; }
+.shot-tags { font: 400 13px / 1.5 var(--font-script); opacity: 0.82; margin: 0; }
+.script-link {
+  display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 4px 0;
+  color: inherit; font: 500 16px var(--font-ui); text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
+}
+.note { font-family: var(--font-hand); font-size: 17px; opacity: 0.78; margin: 0; line-height: 1.5; }
+.arrow-icon { flex: none; }
+
+/* ---------- Mobile : cadre vertical 9:16 ---------- */
+@media (max-width: 767px) {
+  :root { --bar-h: 64px; }
+  .bar-bottom { height: 150px; }
+  .bar-top { grid-template-columns: auto 1fr auto; gap: 12px; }
+  .sound { display: none; }
+  .timecode { justify-content: center; font-size: 12px; gap: 0.8em; }
+  .rail-toggle {
+    display: block; position: fixed; top: 18px; right: 16px; background: none; border: 0;
+    color: var(--ink); font: 500 14px var(--font-ui); text-decoration: underline; text-underline-offset: 4px; padding: 6px 0; cursor: pointer;
+  }
+  .rail { display: none; width: auto; left: 0; bottom: 150px; }
+  .rail.is-open { display: block; z-index: 20; background: rgb(5 5 5 / 0.96); }
+  .rail::before, .rail::after { display: none; }
+  .rail ol { justify-content: flex-start; gap: 6px; padding: 24px; }
+  .rail button { padding: 12px; min-height: 44px; }
+  .rail-label { font-size: 16px; }
+  .shot { right: 0; bottom: 150px; }
+  .note { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot { transition: none; }
+}
