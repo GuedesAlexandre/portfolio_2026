@@ -10,7 +10,7 @@ export const IDENTITY = {
 export const FULL_NAME = `${IDENTITY.givenName} ${IDENTITY.familyName}`;
 
 export const ROLE ='Ingénieur logiciel en alternance · BPCE SI & ESIEE Paris';
-export const TAGLINE = 'Kubernetes sans une ligne de YAML, un LLM qui tourne en local, 1\u00a0299 hôpitaux placés par un algorithme génétique.';
+export const TAGLINE = 'Apprenti ingénieur logiciel. Je construis des outils qui rendent la technique agréable à prendre en main.';
 export const MANIFESTO =
   'Je prends un truc complexe et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
 export const STACK = [
