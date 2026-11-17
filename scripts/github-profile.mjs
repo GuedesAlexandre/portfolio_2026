@@ -1,10 +1,8 @@
-// Génère le README du profil GitHub (dépôt GuedesAlexandre/GuedesAlexandre), en anglais, dans la DA du portfolio :
-// papier quadrillé, marge rouge, Instrument Serif, Hanken Grotesk, notes manuscrites, signature.
-// La structure (projets, dépôts, liens, contact) vient des données du site (src/story/*) ; les textes sont
-// traduits ci-dessous (EN) et le script s'arrête si un projet n'a pas sa traduction. Le texte est converti en tracés SVG
-// (GitHub n'affiche pas les polices web dans les images).
+// Génère le README du profil GitHub (dépôt GuedesAlexandre/GuedesAlexandre) : la structure de toujours
+// (bannière, nom, badges, Tech Stack, citation), habillée dans la DA du portfolio. Les deux images sont faites
+// avec les polices du site, converties en tracés (GitHub n'affiche pas les polices web dans les images).
 // Usage : node scripts/github-profile.mjs <dossier du dépôt de profil>
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 // opentype.js est publié en CommonJS : l'export par défaut existe à l'exécution, oxlint ne le voit pas.
 // oxlint-disable-next-line import/default
@@ -15,70 +13,20 @@ const out = process.argv[2];
 if (!out) throw new Error('Usage : node scripts/github-profile.mjs <dossier du dépôt de profil>');
 
 const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' });
-const about = await vite.ssrLoadModule('/src/story/about.ts');
-const { PROJECTS } = await vite.ssrLoadModule('/src/story/projects.ts');
+const { CONTACT, FULL_NAME } = await vite.ssrLoadModule('/src/story/about.ts');
 const { SIGNATURE } = await vite.ssrLoadModule('/src/loader/signature.ts');
 const { resolveSiteUrl } = await vite.ssrLoadModule('/src/seo/seo.ts');
 await vite.close();
-// ---------- Textes en anglais (le site reste en français) ----------
-const EN = {
-  role: 'Software engineering apprentice · BPCE SI & ESIEE Paris',
-  tagline: 'Apprentice software engineer. I build tools that make technology a pleasure to pick up.',
-  manifesto: 'I care about building things that will still be useful tomorrow. Not to shine for the length of a demo: for the people who will actually use them.',
-  projects: {
-    kelp: {
-      context: 'Personal project · in progress',
-      summary: 'Run Kubernetes without ever touching kubectl or YAML. You create containers in a visual interface, wire them together by pulling cables, and Kelp sets up the cluster, namespaces and deployments behind the scenes.',
-      note: 'zero lines of YAML',
-    },
-    movierecom: {
-      context: 'ESIEE Paris · pair project',
-      summary: 'An “evening advisor”: instead of scrolling through a catalogue, you describe what you feel like and a local LLM negotiates with you on the film to watch.',
-      note: 'an LLM, running locally',
-    },
-    azathro: {
-      context: 'Personal project · game',
-      summary: 'A lite version of Balatro, the roguelike card game, rebuilt from scratch in Java with a Lovecraftian atmosphere.',
-      note: 'home-made engine',
-    },
-    deserts: {
-      title: 'Medical deserts',
-      context: 'ESIEE Paris · multidisciplinary project · team',
-      summary: 'Where should France build its hospitals? A genetic algorithm written in C picks, among the 34,437 communes of mainland France, where to put hospitals so that everyone has one within 10 km, at the lowest cost.',
-      note: '1,299 hospitals placed',
-    },
-  },
-  journey: [
-    { what: 'Software engineering apprentice at BPCE Solutions Informatiques, IT department of BPCE Factor', how: 'Modernising Spring Boot applications and observability.' },
-    { what: 'Engineering degree at ESIEE Paris', how: 'Computer Science, Design, Architecture and Development track.' },
-  ],
-  inventory: { Machine: 'ThinkPad running Omarchy', IDE: 'IntelliJ IDEA', 'En ce moment': ['Right now', 'Kelp'], 'Hors écran': ['Off screen', 'lifting, video games, manga, cinema, Lovecraft'] },
-  ui: {
-    below: (n) => `${n} projects below ↓`, code: 'view the code ↗', site: 'on the portfolio ↗', journey: 'Journey', engineer: 'engineer, 2028',
-    stack: 'The stack', rest: 'The rest', hello: 'say hello', kept: 'notebook kept in 2026',
-  },
-};
-
-/** Données du site + textes anglais. Un projet, une étape ou une ligne sans traduction arrête le script. */
-function localize() {
-  const missing = (what) => { throw new Error(`Traduction anglaise manquante pour ${what} (scripts/github-profile.mjs, EN)`); };
-  const projects = PROJECTS.map((p) => {
-    const t = EN.projects[p.id] ?? missing(`le projet « ${p.id} »`);
-    return { ...p, title: t.title ?? p.title, context: t.context, summary: t.summary, note: p.note && (t.note ?? missing(`la note de « ${p.id} »`)) };
-  });
-  if (about.JOURNEY.length !== EN.journey.length) missing('le parcours (nombre d’étapes différent)');
-  const steps = about.JOURNEY.map((j, i) => ({ when: j.when, ...EN.journey[i] }));
-  const inventory = about.INVENTORY.map(([k, v]) => {
-    const t = EN.inventory[k] ?? missing(`« ${k} » dans Le reste`);
-    // Une chaîne : la valeur traduite ; un couple : [libellé traduit, valeur traduite].
-    return typeof t === 'string' ? [k, t] : [t[0], t[1] ?? v];
-  });
-  return { ...EN, projects, journey: steps, inventory, stack: about.STACK };
-}
-const T = localize();
-
 const SITE = resolveSiteUrl({ ...loadEnv('production', process.cwd(), ''), ...process.env }) ?? 'https://www.alexandreguedes.dev';
 
+// ---------- Contenu du README (celui d'avant, inchangé) ----------
+const SUBTITLE = '**Software Engineering Student** | **Full Stack Developer**';
+const STACK = {
+  Frontend: [['TypeScript', 'typescript'], ['Angular', 'angular'], ['Vue.js', 'vuedotjs'], ['Nuxt.js', 'nuxt'], ['TailwindCSS', 'tailwindcss']],
+  Backend: [['Java', 'openjdk'], ['Spring', 'spring'], ['NestJS', 'nestjs']],
+  'Database & Tools': [['MySQL', 'mysql'], ['Git', 'git'], ['Figma', 'figma']],
+};
+const QUOTE = 'Don’t you dare go Hollow';
 // ---------- Charte (src/styles/tokens.css) ----------
 const C = { bg: '#f3efe7', ink: '#161513', dim: '#716b62', accent: '#cf2a25', unlit: '#d8d2c7', grid: 'rgba(22,21,19,0.06)', edge: 'rgba(22,21,19,0.10)' };
 const load = (f) => {
@@ -151,18 +99,6 @@ function text(str, { font, size, x, y, fill = C.ink, anchor = 'start', ls = 0, c
     + (arrows ? `<path${attrs} fill="none" stroke="${fill}" stroke-width="${r(size * 0.075)}" stroke-linecap="round" stroke-linejoin="round" d="${arrows}"/>` : '');
 }
 
-/** Découpe en lignes (l'espace insécable ne coupe pas). */
-function wrap(str, font, size, max, ls) {
-  const lines = [];
-  let line = '';
-  for (const w of str.split(' ')) {
-    const next = line ? `${line} ${w}` : w;
-    if (line && measure(next, font, size, ls) > max) { lines.push(line); line = w; } else line = next;
-  }
-  if (line) lines.push(line);
-  return lines;
-}
-
 // ---------- Papier ----------
 let uid = 0;
 function paper(w, h, { margin = 56, gridSize = 36 } = {}) {
@@ -180,172 +116,69 @@ const note = (str, x, y, size = 22, angle = -4, anchor = 'start') => {
   const cx = anchor === 'middle' ? x : anchor === 'end' ? x - w / 2 : x + w / 2;
   return `<g transform="rotate(${angle} ${r(cx)} ${y})">${text(str, { font: F.hand, size, x, y, fill: C.accent, anchor })}</g>`;
 };
-const caps = (str, o) => text(str.toUpperCase(), { font: F.sansMedium, ls: 0.14, fill: C.dim, ...o });
-const REDUCED = '@media (prefers-reduced-motion: reduce){*{animation:none!important}}';
 
-// ---------- En-tête ----------
-function header() {
-  const W = 1000, H = 440;
-  const tagline = wrap(T.tagline, F.italic, 26, 600);
-  const body = paper(W, H)
-    + text('a.', { font: F.hand, size: 30, x: 18, y: 56 })
-    + caps(T.role, { size: 13, x: W / 2 + 28, y: 116, anchor: 'middle' })
-    + text(about.IDENTITY.givenName, { font: F.serif, size: 168, x: W / 2 + 28, y: 268, anchor: 'middle', ls: -0.03, cls: 'rise' })
-    + tagline.map((l, i) => text(l, { font: F.italic, size: 26, x: W / 2 + 28, y: 330 + i * 34, anchor: 'middle' })).join('')
-    + note(T.ui.below(T.projects.length), 92, 404, 20, -3);
-  const css = '.rise{animation:rise 1s cubic-bezier(.16,1,.3,1) both}@keyframes rise{from{opacity:0;transform:translateY(14px)}}' + REDUCED;
-  return svg(W, H, `${about.FULL_NAME}. ${T.role}. ${T.tagline}`, body, css);
-}
 
-// ---------- Manifeste : les mots s'allument un à un, comme au scroll sur le site ----------
-function manifesto() {
-  const W = 1000, size = 46, lh = 52, maxW = 780;
-  const lines = wrap(T.manifesto, F.serif, size, maxW, -0.01);
-  const H = 120 + lines.length * lh;
-  let i = 0, body = paper(W, H, { margin: 0 });
-  lines.forEach((line, li) => {
-    const y = 78 + li * lh + size * 0.72;
-    let x = W / 2 - measure(line, F.serif, size, -0.01) / 2;
-    for (const word of line.split(' ')) {
-      body += text(word, { font: F.serif, size, x, y, fill: C.unlit, ls: -0.01, cls: 'w', style: `animation-delay:${r(0.5 + i++ * 0.11)}s` });
-      x += measure(`${word} `, F.serif, size, -0.01);
-    }
-  });
-  const css = `.w{animation:lit .5s ease forwards}@keyframes lit{to{fill:${C.ink}}}@media (prefers-reduced-motion: reduce){.w{animation:none;fill:${C.ink}}}`;
-  return svg(W, H, T.manifesto, body, css);
-}
-
-// ---------- Projets : une planche par projet ----------
-const projectLink = (p) => p.repo ?? `${SITE}/#${p.id}`;
-function projectCards() {
-  const W = 480, M = 34, X = M + 24, maxW = W - X - 28;
-  const parts = T.projects.map((p, idx) => {
-    const summary = wrap(p.summary, F.sans, 15, maxW);
-    const stack = wrap(p.stack.join('  ·  '), F.sans, 13, maxW);
-    return { p, idx, summary, stack, h: 132 + summary.length * 22 + 18 + stack.length * 19 + 64 };
-  });
-  const H = Math.max(...parts.map((x) => x.h));
-  return parts.map(({ p, idx, summary, stack }) => {
-    let y = 54;
-    let body = paper(W, H, { margin: M, gridSize: 32 });
-    body += caps(`${String(idx + 1).padStart(2, '0')} / ${String(T.projects.length).padStart(2, '0')}   ${p.context}`, { size: 10.5, x: X, y, ls: 0.12 });
-    y += 58;
-    body += text(p.title, { font: F.serif, size: 50, x: X, y, ls: -0.01 });
-    y += 34;
-    body += summary.map((l, i) => text(l, { font: F.sans, size: 15, x: X, y: y + i * 22 })).join('');
-    y += summary.length * 22 + 14;
-    body += stack.map((l, i) => text(l, { font: F.sans, size: 13, x: X, y: y + i * 19, fill: C.dim })).join('');
-    const label = p.repo ? T.ui.code : T.ui.site;
-    const ly = H - 34, lw = measure(label, F.sansMedium, 15);
-    body += text(label, { font: F.sansMedium, size: 15, x: X, y: ly });
-    body += `<path d="M${X} ${ly + 7}H${r(X + lw)}" stroke="${C.accent}" stroke-width="1.5"/>`;
-    if (p.note) body += note(p.note, W - 28, ly - 2, 16, -4, 'end');
-    const alt = `${p.title} — ${p.context}. ${p.summary} Stack: ${p.stack.join(', ')}.`;
-    return { file: `projet-${p.id}.svg`, href: projectLink(p), alt, content: svg(W, H, alt, body) };
-  });
-}
-
-// ---------- Parcours + fiches ----------
-function journey() {
-  const W = 1000, M = 56;
-  let y = 92;
-  let body = text(T.ui.journey, { font: F.italic, size: 54, x: W / 2 + M / 2, y: 92, anchor: 'middle', ls: -0.01 });
-  y += 70;
-  const lineX = 340, top = y - 28;
-  const rows = T.journey.map((j, i) => {
-    const what = wrap(j.what, F.sansMedium, 16, 520);
-    const how = wrap(j.how, F.sans, 15, 520);
-    const rowY = y;
-    y += Math.max(40, (what.length + how.length) * 23) + 34;
-    return text(j.when, { font: F.italic, size: 32, x: lineX - 34, y: rowY + 4, anchor: 'end' })
-      + `<circle cx="${lineX}" cy="${rowY - 7}" r="6" fill="${i === 0 ? C.accent : C.bg}" stroke="${i === 0 ? C.accent : C.ink}" stroke-width="1.5"/>`
-      + what.map((l, k) => text(l, { font: F.sansMedium, size: 16, x: lineX + 30, y: rowY + k * 23 })).join('')
-      + how.map((l, k) => text(l, { font: F.sans, size: 15, x: lineX + 30, y: rowY + (what.length + k) * 23, fill: C.dim })).join('');
-  });
-  body += `<path d="M${lineX} ${top}V${y - 40}" stroke="${C.ink}" stroke-opacity="0.35" stroke-width="1.5"/>` + rows.join('');
-  body += note(T.ui.engineer, W / 2 + 150, 74, 19, -6);
-
-  // Les deux fiches à points de conduite.
-  y += 16;
-  const sheet = (title, entries, x0, w) => {
-    let sy = y;
-    let s = text(title, { font: F.italic, size: 30, x: x0, y: sy });
-    sy += 40;
-    for (const [k, v] of entries) {
-      const kw = measure(k, F.sans, 14);
-      const vals = wrap(v, F.sans, 15.5, w - kw - 60);
-      const vw = measure(vals[0], F.sans, 15.5);
-      s += text(k, { font: F.sans, size: 14, x: x0, y: sy, fill: C.dim });
-      vals.forEach((l, i) => { s += text(l, { font: F.sans, size: 15.5, x: x0 + w, y: sy + i * 22, anchor: 'end' }); });
-      s += `<path d="M${r(x0 + kw + 10)} ${sy - 3}H${r(x0 + w - vw - 10)}" stroke="${C.ink}" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="1.5 4" stroke-linecap="round"/>`;
-      sy += 32 + (vals.length - 1) * 22;
-    }
-    return { s, end: sy };
-  };
-  const a = sheet(T.ui.stack, T.stack.map((s) => [s.part, s.value]), 100, 360);
-  const b = sheet(T.ui.rest, T.inventory, 540, 380);
-  body += a.s + b.s;
-  const H = Math.max(a.end, b.end) + 30;
-  const alt = `Journey: ${T.journey.map((j) => `${j.when} ${j.what} (${j.how})`).join('; ')}. The stack: ${T.stack.map((s) => `${s.part} ${s.value}`).join(', ')}. The rest: ${T.inventory.map(([k, v]) => `${k} ${v}`).join(', ')}.`;
-  return svg(W, H, alt, paper(W, H, { margin: M }) + body);
-}
-
-// ---------- Contact : « dis bonjour » et la signature qui se trace ----------
-function contact() {
-  const W = 1000, H = 340;
-  const sw = 300, k = sw / SIGNATURE.width, sx = (W - sw) / 2, sy = 150;
+// ---------- Bannière : la page du carnet, la signature se trace à la plume ----------
+function banner() {
+  const W = 1000, H = 300;
+  const sw = 520, k = sw / SIGNATURE.width, sx = (W - sw) / 2 + 28, sy = (H - SIGNATURE.height * k) / 2 + 6;
   const n = SIGNATURE.glyphs.length;
   const sign = SIGNATURE.glyphs.map((d, i) => `<path pathLength="1" d="${d}" style="animation-delay:${r(0.4 + i * 0.16)}s,${r(0.4 + n * 0.16)}s"/>`).join('');
-  const body = paper(W, H, { margin: 0 })
-    + text(T.ui.hello, { font: F.italic, size: 96, x: W / 2, y: 128, anchor: 'middle', ls: -0.02 })
-    + `<g class="s" transform="translate(${r(sx)} ${sy}) scale(${r(k * 1000) / 1000})">${sign}</g>`
-    + text(T.ui.kept, { font: F.sans, size: 13, x: W / 2, y: H - 34, anchor: 'middle', fill: C.dim });
-  const css = `.s path{fill:${C.ink};fill-opacity:0;stroke:${C.ink};stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:sign .5s cubic-bezier(.45,.05,.35,1) forwards,ink .6s ease forwards}@keyframes sign{to{stroke-dashoffset:0}}@keyframes ink{to{fill-opacity:1;stroke-opacity:0}}@media (prefers-reduced-motion: reduce){.s path{animation:none;stroke-dashoffset:0;fill-opacity:1;stroke-opacity:0}}`;
-  return svg(W, H, 'Say hello. Signature: Alexandre.', body, css);
+  const body = paper(W, H)
+    + text('a.', { font: F.hand, size: 30, x: 18, y: 56 })
+    + `<g class="s" transform="translate(${r(sx)} ${r(sy)}) scale(${r(k * 1000) / 1000})">${sign}</g>`
+    + note('software, by hand', W - 40, H - 34, 19, -4, 'end');
+  const css = `.s path{fill:${C.ink};fill-opacity:0;stroke:${C.ink};stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:sign .5s cubic-bezier(.45,.05,.35,1) forwards,ink .6s ease forwards}@keyframes sign{to{stroke-dashoffset:0}}@keyframes ink{to{fill-opacity:1;stroke-opacity:0}}@media (prefers-reduced-motion: reduce){.s path{animation:none;stroke-dashoffset:0;fill-opacity:1;stroke-opacity:0}}`;
+  return svg(W, H, `${FULL_NAME}, signature`, body, css);
+}
+
+// ---------- Citation : en serif italique, comme une phrase recopiée dans la marge ----------
+function quote() {
+  const W = 1000, H = 150, size = 40;
+  const body = paper(W, H)
+    + text(`“${QUOTE}”`, { font: F.italic, size, x: W / 2 + 28, y: 88, anchor: 'middle', ls: -0.01 })
+    + note('keep the flame', W / 2 + 28 + measure(`“${QUOTE}”`, F.italic, size, -0.01) / 2 - 10, 124, 16, -4, 'end');
+  return svg(W, H, QUOTE, body);
 }
 
 // ---------- README ----------
 const assets = join(out, 'assets');
 mkdirSync(assets, { recursive: true });
-const write = (name, content) => writeFileSync(join(assets, name), content);
-write('entete.svg', header());
-write('manifeste.svg', manifesto());
-write('parcours.svg', journey());
-write('contact.svg', contact());
-const cards = projectCards();
-for (const c of cards) write(c.file, c.content);
+for (const f of readdirSync(assets)) rmSync(join(assets, f)); // repart de zéro : pas d'image orpheline
+writeFileSync(join(assets, 'banner.svg'), banner());
+writeFileSync(join(assets, 'quote.svg'), quote());
 
-const linkedin = about.CONTACT.links.find((l) => /linkedin/i.test(l.label));
-const contactLinks = [
-  `<a href="${SITE}"><b>${new URL(SITE).host.replace(/^www\./, '')}</b></a>`,
-  linkedin && `<a href="${linkedin.href}">LinkedIn</a>`,
-  `<a href="mailto:${about.CONTACT.email}">${about.CONTACT.email}</a>`,
-].filter(Boolean).join('&nbsp;&nbsp;·&nbsp;&nbsp;');
-const pairs = [];
-for (let i = 0; i < cards.length; i += 2) {
-  pairs.push(cards.slice(i, i + 2).map((c) => `<a href="${c.href}"><img src="assets/${c.file}" width="49%" alt="${esc(c.alt)}"></a>`).join('\n'));
-}
+/** Badge shields.io : encre sur papier pour la stack, papier sur rouge (l'accent du site) pour le contact. */
+const badge = (label, logo, { bg = C.bg.slice(1), fg = C.ink.slice(1) } = {}) =>
+  `![${label}](https://img.shields.io/badge/-${encodeURIComponent(label.replace(/-/g, '--'))}-${bg}?style=flat-square&logo=${encodeURIComponent(logo)}&logoColor=${fg})`;
+// Le rouge reste lisible sur le fond clair comme sur le fond sombre de GitHub, contrairement à l'encre.
+const ink = { bg: C.accent.slice(1), fg: C.bg.slice(1) };
+const linkedin = CONTACT.links.find((l) => /linkedin/i.test(l.label));
 
 const readme = `<!-- Généré par scripts/github-profile.mjs depuis le dépôt du portfolio : ne pas modifier à la main. -->
 <div align="center">
 
-<a href="${SITE}"><img src="assets/entete.svg" width="100%" alt="${esc(`${about.FULL_NAME}. ${T.role}. ${T.tagline}`)}"></a>
+<a href="${SITE}"><img src="assets/banner.svg" alt="${esc(FULL_NAME)}" width="1000"/></a>
 
-${contactLinks}
+# ${FULL_NAME}
 
-<br>
+${SUBTITLE}
 
-<img src="assets/manifeste.svg" width="100%" alt="${esc(T.manifesto)}">
+[${badge('Portfolio', 'googlechrome', ink)}](${SITE})
+[${badge('LinkedIn', 'linkedin', ink)}](${linkedin.href})
+[${badge('Email', 'gmail', ink)}](mailto:${CONTACT.email})
 
-${pairs.join('\n\n')}
+---
 
-<img src="assets/parcours.svg" width="100%" alt="Journey, stack and the rest">
+## Tech Stack
 
-<a href="${SITE}/#contact"><img src="assets/contact.svg" width="100%" alt="Say hello"></a>
+${Object.entries(STACK).map(([group, items]) => `**${group}**  \n${items.map(([l, logo]) => badge(l, logo)).join('\n')}`).join('\n\n')}
 
-${contactLinks}
+---
+
+<img src="assets/quote.svg" alt="“${esc(QUOTE)}”" width="1000"/>
 
 </div>
 `;
 writeFileSync(join(out, 'README.md'), readme);
-console.log(`profil généré dans ${out} (${cards.length + 4} images)`);
+console.log(`profil généré dans ${out}`);
