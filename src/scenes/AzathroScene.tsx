@@ -9,13 +9,13 @@ export function AzathroScene() {
   return (
     <div className="az" aria-hidden="true">
       <div className="az-frame">
-        <img className="az-bg" src="/azathro/background.webp" alt="" />
+        <img className="az-bg" src="/azathro/background.webp" alt="" loading="lazy" decoding="async" />
         <span className="az-eye" style={{ left: '41.9%' }} />
         <span className="az-eye" style={{ left: '50.5%' }} />
       </div>
       <div className="az-hand">
         {HAND.cards.map((c, i) => (
-          <img key={c} className="az-card" src={`/azathro/${c}.png`} alt="" style={{ '--i': i } as React.CSSProperties} />
+          <img key={c} className="az-card" src={`/azathro/${c}.png`} alt="" loading="lazy" decoding="async" style={{ '--i': i } as React.CSSProperties} />
         ))}
       </div>
       <p className="az-score">

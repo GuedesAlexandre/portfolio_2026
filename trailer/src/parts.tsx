@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { useCurrentFrame } from 'remotion';
 import { C, F } from './shots';
 import { clamp01, ramp } from './ease';
-import { SIGNATURE } from './site/signature';
+import { SIGNATURE } from '../../src/loader/signature';
 
 /** Canvas plein cadre redessiné à chaque frame (rendu déterministe : t vient du numéro de frame). */
 export function DrawCanvas({ draw, w = 1920, h = 1080 }: { draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void; w?: number; h?: number }) {
@@ -12,6 +12,8 @@ export function DrawCanvas({ draw, w = 1920, h = 1080 }: { draw: (ctx: CanvasRen
     const ctx = ref.current!.getContext('2d')!;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     draw(ctx, w, h);
+    // `frame` n'est pas lu dans l'effet : c'est lui qui force le redessin à chaque image du rendu.
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies
   }, [frame, draw, w, h]);
   return <canvas ref={ref} width={w} height={h} style={{ position: 'absolute', inset: 0, width: w, height: h }} />;
 }

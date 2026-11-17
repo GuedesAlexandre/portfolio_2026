@@ -11,5 +11,5 @@ export const SHOTS = {
   outro: { from: 1130, duration: 170 },
 } as const;
 export const TOTAL = SHOTS.outro.from + SHOTS.outro.duration;
-export const C = { bg: '#0b0b0c', ink: '#ede8df', dim: '#5c5a57', accent: '#ff6a1f', yellow: '#f5c518' };
+export const C = { bg: '#0b0b0c', ink: '#ede8df', dim: '#5c5a57', accent: '#e8322f', yellow: '#f5c518' };
 export const F = { serif: '"Instrument Serif", serif', sans: '"Hanken Grotesk", sans-serif', hand: '"Homemade Apple", cursive' };

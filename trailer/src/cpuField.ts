@@ -1,23 +1,9 @@
-const rnd = (i: number) => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+import { rnd } from '../../src/particles/field';
 
-type Img = { data: Uint8ClampedArray; width: number; height: number };
-
-/** Positions cibles (x, y, z) tirées sur les pixels dessinés d'une image, à l'échelle `worldWidth`. */
-export function sampleTargets(img: Img, n: number, worldWidth: number): Float32Array {
-  const on: number[] = [];
-  for (let y = 0; y < img.height; y++) for (let x = 0; x < img.width; x++) if (img.data[(y * img.width + x) * 4 + 3] > 128) on.push(x, y);
-  const out = new Float32Array(n * 3);
-  const count = on.length / 2;
-  if (!count) return out;
-  const k = worldWidth / img.width;
-  for (let i = 0; i < n; i++) {
-    const p = Math.floor(rnd(i) * count);
-    out[i * 3] = (on[p * 2] + rnd(i + 7) * 0.9 - img.width / 2) * k;
-    out[i * 3 + 1] = -(on[p * 2 + 1] + rnd(i + 13) * 0.9 - img.height / 2) * k;
-    out[i * 3 + 2] = (rnd(i + 21) - 0.5) * 0.15;
-  }
-  return out;
-}
+/**
+ * Le site anime les particules dans un shader (pointSeeds). Remotion rend image par image sur CPU :
+ * mêmes graines, même tourbillon, calculés ici en JS.
+ */
 
 /** Nuage en désordre qui tourbillonne lentement. */
 export function chaosAt(n: number, t: number, out: Float32Array) {

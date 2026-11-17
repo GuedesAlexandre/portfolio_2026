@@ -1,7 +1,12 @@
 import { LOOP, eventsUntil } from './kelpTimeline';
 
 /** Rejoue une session Kelp : alvéoles en nid d'abeille, câbles tirés, namespaces, cluster, load balancer. */
-const INK = '#ede8df', ORANGE = '#ff6a1f', DIM = '#5c5a57', CELL = '#161514', BG = '#0b0b0c';
+export type KelpPalette = { ink: string; accent: string; dim: string; cell: string; bg: string; grid: string; kelp: string; lbUp: string };
+/** Palette du site (papier clair). La bande-annonce passe la sienne, sombre. */
+export const KELP_LIGHT: KelpPalette = {
+  ink: '#161513', accent: '#cf2a25', dim: '#716b62', cell: '#fbf9f4', bg: '#f3efe7',
+  grid: 'rgba(22,21,19,0.06)', kelp: '#e2dccf', lbUp: '#2f8a3e',
+};
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
 const smooth = (x: number) => { const t = clamp01(x); return t * t * (3 - 2 * t); };
 const backOut = (x: number) => { const t = clamp01(x); const c = 1.7; return 1 + (c + 1) * (t - 1) ** 3 + c * (t - 1) ** 2; };
@@ -28,7 +33,7 @@ const NAMESPACES = [
   { id: 'ns-jobs', from: 7.4, members: [{ id: 'worker', at: 7.4 }, { id: 'redis', at: 7.4 }] },
 ];
 
-let gridCache: { w: number; h: number; r: number; canvas: HTMLCanvasElement } | null = null;
+let gridCache: { w: number; h: number; r: number; stroke: string; canvas: HTMLCanvasElement } | null = null;
 
 function hexPath(c: CanvasRenderingContext2D, x: number, y: number, r: number) {
   c.beginPath();
@@ -44,23 +49,24 @@ function snap(x: number, y: number, r: number) {
   return { x: col * w + (row % 2 ? w / 2 : 0), y: row * h };
 }
 
-function grid(c: CanvasRenderingContext2D, w: number, h: number, r: number) {
+function grid(c: CanvasRenderingContext2D, w: number, h: number, r: number, stroke: string) {
   if (typeof document === 'undefined') return;
-  if (!gridCache || gridCache.w !== w || gridCache.h !== h || gridCache.r !== r) {
+  if (!gridCache || gridCache.w !== w || gridCache.h !== h || gridCache.r !== r || gridCache.stroke !== stroke) {
     const g = document.createElement('canvas'); g.width = w; g.height = h;
     const gc = g.getContext('2d');
     if (!gc) return;
-    gc.strokeStyle = 'rgba(237,232,223,0.05)'; gc.lineWidth = 1;
+    gc.strokeStyle = stroke; gc.lineWidth = 1;
     const cw = Math.sqrt(3) * r;
     for (let row = -1; row * 1.5 * r < h + r; row++) for (let col = -1; col * cw < w + cw; col++) {
       hexPath(gc, col * cw + (row % 2 ? cw / 2 : 0), row * 1.5 * r, r - 1); gc.stroke();
     }
-    gridCache = { w, h, r, canvas: g };
+    gridCache = { w, h, r, stroke, canvas: g };
   }
   c.drawImage(gridCache.canvas, 0, 0);
 }
 
-export function drawKelp(c: CanvasRenderingContext2D, t: number, w: number, h: number) {
+export function drawKelp(c: CanvasRenderingContext2D, t: number, w: number, h: number, pal: KelpPalette = KELP_LIGHT) {
+  const { ink: INK, accent: ACCENT, dim: DIM, cell: CELL, bg: BG } = pal;
   const local = ((t % LOOP) + LOOP) % LOOP;
   const fade = 1 - smooth((local - 14.6) / 1.2);
   const r = Math.max(20, Math.min(50, Math.min(w, h) * 0.055));
@@ -68,11 +74,11 @@ export function drawKelp(c: CanvasRenderingContext2D, t: number, w: number, h: n
 
   c.globalAlpha = 1;
   c.fillStyle = BG; c.fillRect(0, 0, w, h);
-  grid(c, w, h, r);
+  grid(c, w, h, r, pal.grid);
   c.globalAlpha = fade;
 
   // Algues discrètes sur les bords : le clin d'œil au nom.
-  c.strokeStyle = '#1b1a18'; c.lineWidth = Math.max(3, r * 0.12); c.lineCap = 'round';
+  c.strokeStyle = pal.kelp; c.lineWidth = Math.max(3, r * 0.12); c.lineCap = 'round';
   for (let k = 0; k < 6; k++) {
     const x0 = k < 3 ? w * (0.02 + k * 0.035) : w * (0.9 + (k - 3) * 0.035), sway = Math.sin(t * 0.8 + k) * r * 0.5;
     c.beginPath(); c.moveTo(x0, h); c.bezierCurveTo(x0 + sway, h * 0.8, x0 - sway, h * 0.7, x0 + sway * 0.6, h * (0.55 + (k % 3) * 0.05)); c.stroke();
@@ -108,7 +114,7 @@ export function drawKelp(c: CanvasRenderingContext2D, t: number, w: number, h: n
     const A = pos[cb.a], B = pos[cb.b];
     const mx = (A.x + B.x) / 2 + (B.y - A.y) * 0.18, my = (A.y + B.y) / 2 + r * 0.6;
     const pt = (s: number) => ({ x: (1 - s) ** 2 * A.x + 2 * (1 - s) * s * mx + s * s * B.x, y: (1 - s) ** 2 * A.y + 2 * (1 - s) * s * my + s * s * B.y });
-    c.strokeStyle = ORANGE; c.lineWidth = Math.max(2, r * 0.07);
+    c.strokeStyle = ACCENT; c.lineWidth = Math.max(2, r * 0.07);
     c.beginPath(); c.moveTo(A.x, A.y);
     for (let s = 0.04; s <= p + 1e-6; s += 0.04) { const q = pt(Math.min(s, p)); c.lineTo(q.x, q.y); }
     c.stroke();
@@ -127,26 +133,30 @@ export function drawKelp(c: CanvasRenderingContext2D, t: number, w: number, h: n
     const { x, y } = pos[n.id];
     c.save(); c.translate(x, y); c.scale(s, s);
     hexPath(c, 0, 0, r * 0.94); c.fillStyle = CELL; c.fill();
-    c.lineWidth = n.lb ? 3 : 2; c.strokeStyle = ORANGE; c.stroke();
+    c.lineWidth = n.lb ? 3 : 2; c.strokeStyle = ACCENT; c.stroke();
     if (n.lb) { hexPath(c, 0, 0, r * 0.7); c.lineWidth = 1.2; c.stroke(); }
     c.fillStyle = INK; c.textAlign = 'center'; c.textBaseline = 'middle';
     c.font = `500 ${Math.round(r * (n.id.length > 6 ? 0.3 : 0.36))}px "Hanken Grotesk", sans-serif`;
     c.fillText(n.id, 0, 1);
     const up = n.lb ? local >= 10 : true;
-    c.fillStyle = up ? (n.lb ? '#7fd17f' : INK) : DIM;
+    c.fillStyle = up ? (n.lb ? pal.lbUp : INK) : DIM;
     c.beginPath(); c.arc(0, -r * 0.55, Math.max(2, r * 0.07), 0, Math.PI * 2); c.fill();
     c.restore();
   }
 
   // Journal d'événements, comme le flux WebSocket.
-  const log = eventsUntil(local).slice(-5);
-  const fs = Math.max(11, Math.round(r * 0.3)), lx = w * 0.6, ly = h * 0.88;
+  // Sur une planche étroite, moins de lignes, et le journal se cale toujours dans le cadre.
+  const log = eventsUntil(local).slice(w < 600 ? -3 : -5);
+  const fs = Math.max(11, Math.round(r * 0.3)), ly = h * 0.9;
   c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+  c.font = `${fs}px ui-monospace, "SFMono-Regular", Menlo, monospace`;
+  const widest = Math.max(0, ...log.map((e) => c.measureText(`${String(e.t.toFixed(1)).padStart(4, '0')}s  ${e.name}  ${e.detail}`).width));
+  const lx = Math.max(w * 0.04, Math.min(w * 0.6, w * 0.9 - widest));
   log.forEach((e, i) => {
     const newest = i === log.length - 1;
     c.globalAlpha = fade * (0.35 + 0.65 * ((i + 1) / log.length));
     c.font = `${fs}px ui-monospace, "SFMono-Regular", Menlo, monospace`;
-    c.fillStyle = newest ? ORANGE : DIM;
+    c.fillStyle = newest ? ACCENT : DIM;
     const y = ly - (log.length - 1 - i) * fs * 1.5;
     c.fillText(`${String(e.t.toFixed(1)).padStart(4, '0')}s  ${e.name}`, lx, y);
     c.fillStyle = newest ? INK : DIM;

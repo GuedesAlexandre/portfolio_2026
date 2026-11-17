@@ -7,9 +7,7 @@ export interface Project {
   summary: string;
   details: string[];
   stack: string[];
-  note: string;
-  /** Faux si aucune capture ne doit jamais être montrée (projet interne). */
-  showsCapture: boolean;
+  note?: string;
 }
 
 export const PROJECTS: Project[] = [
@@ -26,7 +24,6 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['Spring Boot', 'Fabric8', 'docker-java', 'WebSocket', 'DDD'],
     note: 'zéro ligne de YAML',
-    showsCapture: true,
   },
   {
     id: 'movierecom',
@@ -39,7 +36,6 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['Helidon SE', 'jOOQ', 'SQLite', 'Svelte', 'Qwen2.5-7B'],
     note: 'un LLM, en local',
-    showsCapture: true,
   },
   {
     id: 'azathro',
@@ -52,22 +48,20 @@ export const PROJECTS: Project[] = [
       'Interface graphique construite avec Zen, packaging en JAR, assets chargés depuis le classpath.',
     ],
     stack: ['Java', 'sealed interfaces', 'records', 'Zen'],
-    note: 'sealed interface Suit',
-    showsCapture: true,
+    note: 'moteur fait maison',
   },
   {
     id: 'deserts',
     title: 'Déserts médicaux',
     context: 'ESIEE Paris · projet pluridisciplinaire · en équipe',
-    summary: 'Où construire les hôpitaux de France ? Un algorithme génétique en C choisit, parmi les 34 437 communes de métropole, où placer des hôpitaux pour que chacun en ait un à moins de 10 km, au moindre coût.',
+    summary: 'Où construire les hôpitaux de France ? Un algorithme génétique en C choisit, parmi les 34 437 communes de métropole, où placer des hôpitaux pour que chacun en ait un à moins de 10 km, au moindre coût.',
     details: [
-      'Fitness : population couverte, moins 5 000 points par hôpital construit, plus un bonus pour les CHRU des grandes villes.',
+      'Fitness : population couverte, moins 5 000 points par hôpital construit, plus un bonus pour les CHRU des grandes villes.',
       'Génome de taille variable (malloc / realloc) : l’algorithme ferme de lui-même les hôpitaux qui ne servent à rien.',
-      'Sélection par tournoi, 800 individus, jusqu’à 1 000 générations, mutation de 0,30 à 0,05, immigrants et redémarrages.',
-      'Meilleure solution trouvée : 1 299 hôpitaux dont 2 CHRU, exportée en CSV puis rendue en carte et en PDF.',
+      'Sélection par tournoi, 800 individus, jusqu’à 1 000 générations, mutation de 0,30 à 0,05, immigrants et redémarrages.',
+      'Meilleure solution trouvée : 1 299 hôpitaux dont 2 CHRU, exportée en CSV puis rendue en carte et en PDF.',
     ],
     stack: ['C', 'MLV', 'Python', 'GeoJSON'],
-    note: 'fitness ↑',
-    showsCapture: false,
+    note: '1 299 hôpitaux placés',
   },
 ];

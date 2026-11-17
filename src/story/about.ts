@@ -1,6 +1,18 @@
-export const TAGLINE = 'Apprenti ingénieur logiciel. Je rends simple ce qui est complexe.';
+/** Identité pour les moteurs de recherche et les aperçus de partage (le site, lui, dit « Alexandre »). */
+export const IDENTITY = {
+  givenName: 'Alexandre',
+  familyName: 'Guedes',
+  jobTitle: 'Ingénieur logiciel en alternance',
+  employer: 'BPCE Solutions Informatiques',
+  school: 'ESIEE Paris',
+  knowsAbout: ['Kubernetes', 'Java', 'Spring Boot', 'React', 'Angular', 'TypeScript', 'Podman', 'LLM en local', 'Algorithmes génétiques'],
+};
+export const FULL_NAME = `${IDENTITY.givenName} ${IDENTITY.familyName}`;
+
+export const ROLE ='Ingénieur logiciel en alternance · BPCE SI & ESIEE Paris';
+export const TAGLINE = 'Kubernetes sans une ligne de YAML, un LLM qui tourne en local, 1\u00a0299 hôpitaux placés par un algorithme génétique.';
 export const MANIFESTO =
-  'Je prends un truc complexe, un cluster Kubernetes, un LLM, un moteur de jeu, et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
+  'Je prends un truc complexe et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
 export const STACK = [
   { part: 'Front', value: 'React, Angular, TypeScript' },
   { part: 'Back', value: 'Java, Spring Boot' },
@@ -17,10 +29,9 @@ export const INVENTORY = [
   ['Hors écran', 'muscu, jeux vidéo, mangas, cinéma, Lovecraft'],
 ];
 export const CONTACT = {
-  email: '[ton.email@exemple.com]',
+  email: 'alexandreguedes77600@gmail.com',
   links: [
-    { label: 'GitHub', href: '#contact' },
-    { label: 'LinkedIn', href: '#contact' },
-    { label: 'CV.pdf', href: '#contact' },
+    { label: 'GitHub', href: 'https://github.com/GuedesAlexandre' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/alexandre-guedesmmi/' },
   ],
 };

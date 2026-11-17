@@ -8,7 +8,7 @@
 
 ## Direction visuelle (étape 1) — styleframe sautée
 Raison : le site existe et fixe déjà toute la charte ; le trailer la réutilise telle quelle.
-- Fond #0B0B0C, texte #EDE8DF, éteint #5C5A57, accent #FF6A1F (+ jaune #F5C518 réservé à MovieRecom, comme dans l'appli).
+- Fond #0B0B0C, texte #EDE8DF, éteint #5C5A57, accent #E8322F (+ jaune #F5C518 réservé à MovieRecom, comme dans l'appli).
 - Titres Instrument Serif, texte Hanken Grotesk, notes Homemade Apple.
 - Tokens de mouvement : profil « précis et calme » (low-mid energy) : entrées 20–26 f, bezier(0.6,0,0.18,1) / ease-out, pas de rebond hors slam ; un seul slam (Azathro).
 

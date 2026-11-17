@@ -1,4 +1,4 @@
-import { blend, chaosAt, sampleTargets } from './field';
+import { pointSeeds, sampleTargets } from './field';
 
 const img = (w: number, h: number, on: (x: number, y: number) => boolean) => {
   const data = new Uint8ClampedArray(w * h * 4);
@@ -18,26 +18,13 @@ it('est déterministe', () => {
   expect(Array.from(a)).toEqual(Array.from(b));
 });
 
-it('mélange le chaos et la cible selon t, borné', () => {
-  const chaos = new Float32Array([0, 0, 0]);
-  const target = new Float32Array([2, 4, 6]);
-  const out = new Float32Array(3);
-  blend(chaos, target, 0.5, out); expect(Array.from(out)).toEqual([1, 2, 3]);
-  blend(chaos, target, 7, out); expect(Array.from(out)).toEqual([2, 4, 6]);
-  blend(chaos, target, -1, out); expect(Array.from(out)).toEqual([0, 0, 0]);
-});
-
-it('fait tourbillonner le chaos sans valeur invalide', () => {
-  const out = new Float32Array(300);
-  chaosAt(100, 3.2, out);
-  expect(out.every(Number.isFinite)).toBe(true);
-});
-
-it('fait partir les points à tour de rôle avec des délais', () => {
-  const chaos = new Float32Array(6), target = new Float32Array([1, 1, 1, 1, 1, 1]), out = new Float32Array(6);
-  blend(chaos, target, 0.3, out, new Float32Array([0, 0.5]));
-  expect(out[0]).toBeGreaterThan(0);
-  expect(out[3]).toBe(0);
-  blend(chaos, target, 1, out, new Float32Array([0, 0.5]));
-  expect(Array.from(out)).toEqual([1, 1, 1, 1, 1, 1]);
+it('donne à chaque point des graines valides pour le shader', () => {
+  const s = pointSeeds(500, 0.45);
+  expect(s).toHaveLength(2000);
+  for (let i = 0; i < 500; i++) {
+    expect(s[i * 4]).toBeGreaterThanOrEqual(1.5); expect(s[i * 4]).toBeLessThanOrEqual(5);
+    expect(s[i * 4 + 2]).toBeLessThan(Math.PI * 2);
+    expect(s[i * 4 + 3]).toBeGreaterThanOrEqual(0); expect(s[i * 4 + 3]).toBeLessThan(0.45);
+  }
+  expect(Array.from(pointSeeds(20))).toEqual(Array.from(pointSeeds(20)));
 });

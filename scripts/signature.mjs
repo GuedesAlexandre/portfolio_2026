@@ -1,7 +1,10 @@
 // Génère le tracé SVG de « Alexandre » en Homemade Apple (exécuté une fois, résultat versionné).
+// opentype.js est publié en CommonJS : l'export par défaut existe à l'exécution, oxlint ne le voit pas.
+// oxlint-disable-next-line import/default
 import opentype from 'opentype.js';
 import { readFileSync, writeFileSync } from 'node:fs';
 const buf = readFileSync('node_modules/@fontsource/homemade-apple/files/homemade-apple-latin-400-normal.woff');
+// oxlint-disable-next-line import/no-named-as-default-member
 const font = opentype.parse(buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength));
 const path = font.getPath('Alexandre', 0, 0, 200);
 const b = path.getBoundingBox();

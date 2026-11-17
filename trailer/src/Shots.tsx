@@ -3,10 +3,12 @@ import { AbsoluteFill, Easing, Img, continueRender, delayRender, interpolate, st
 import { BlurSlide, DrawCanvas, Kicker, Signature, signatureEnd } from './parts';
 import { C, F } from './shots';
 import { DEMOTE, clamp01, mix, ramp } from './ease';
-import { drawKelp } from './site/kelpScene';
-import { drawCatalogue } from './site/catalogueScene';
-import { decodeCommunes, drawGenetic, type GeneticData } from './site/geneticScene';
-import { blend, chaosAt, sampleTargets, staggerDelays } from './site/field';
+import { drawKelp } from '../../src/scenes/kelpScene';
+import { drawCatalogue } from '../../src/scenes/catalogueScene';
+import { decodeCommunes, drawGenetic, type GeneticData } from '../../src/scenes/geneticScene';
+import { sampleTargets } from '../../src/particles/field';
+import { blend, chaosAt, staggerDelays } from './cpuField';
+import { CATALOGUE_DARK, GENETIC_DARK, GENETIC_WIDE, KELP_DARK } from './palettes';
 
 const rnd = (i: number) => { const s = Math.sin(i * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
 
@@ -33,7 +35,7 @@ function AzathroArt({ f, cards = true }: { f: number; cards?: boolean }) {
         <Img src={staticFile('azathro/background.webp')} style={{ width: '100%', height: '100%', imageRendering: 'pixelated' }} />
         {[41.9, 50.5].map((x) => (
           <div key={x} style={{ position: 'absolute', left: `${x}%`, top: '44%', width: '3.2%', aspectRatio: '1', transform: `translate(-50%,-50%) scale(${0.9 + glow * 0.35})`, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(255,236,210,0.95) 0 22%, rgba(255,106,31,0.55) 40%, transparent 70%)', mixBlendMode: 'screen', opacity: 0.35 + glow * 0.65 }} />
+            background: 'radial-gradient(circle, rgba(255,236,210,0.95) 0 22%, rgba(232,50,47,0.55) 40%, transparent 70%)', mixBlendMode: 'screen', opacity: 0.35 + glow * 0.65 }} />
         ))}
       </div>
       {cards && (
@@ -55,8 +57,8 @@ function AzathroArt({ f, cards = true }: { f: number; cards?: boolean }) {
 export function Bumper({ data }: { data: GeneticData }) {
   const f = useCurrentFrame();
   const push = (start: number) => interpolate(f, [start, start + 9], [1, 1.04], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const kelp = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawKelp(c, 9.6, w, h), []);
-  const map = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawGenetic(c, 12, w, h, data), [data]);
+  const kelp = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawKelp(c, 9.6, w, h, KELP_DARK), []);
+  const map = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawGenetic(c, 12, w, h, data, { palette: GENETIC_DARK, layout: GENETIC_WIDE }), [data]);
   if (f < 9) return <AbsoluteFill style={{ transform: `scale(${push(0)})` }}><DrawCanvas draw={kelp} /></AbsoluteFill>;
   if (f < 18) return <AbsoluteFill style={{ transform: `scale(${push(9)})` }}><AzathroArt f={f} /></AbsoluteFill>;
   if (f < 27) return (
@@ -130,7 +132,7 @@ export function Manifesto() {
           return <span key={i} style={{ color: `rgb(${Math.round(mix(44, 237, p))},${Math.round(mix(43, 232, p))},${Math.round(mix(41, 223, p))})` }}>{w} </span>;
         })}
       </p>
-      <div style={{ position: 'absolute', right: 190, top: 170, fontFamily: F.hand, fontSize: 30, color: C.accent, transform: 'rotate(5deg)', opacity: note }}>O(complexe) → O(simple)</div>
+      <div style={{ position: 'absolute', right: 190, top: 170, fontFamily: F.hand, fontSize: 30, color: C.accent, transform: 'rotate(5deg)', opacity: note }}>Kelp, MovieRecom, Azathro</div>
     </AbsoluteFill>
   );
 }
@@ -138,7 +140,7 @@ export function Manifesto() {
 /* ---------- S4 · Kelp : title-demote-to-label ---------- */
 export function Kelp() {
   const f = useCurrentFrame();
-  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawKelp(c, 0.8 + (f / 30) * 1.65, w, h), [f]);
+  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawKelp(c, 0.8 + (f / 30) * 1.65, w, h, KELP_DARK), [f]);
   const d = ramp(f, 34, 26, DEMOTE); // 18 f debout puis 26 f de déclassement
   const scale = mix(1, 0.22, d);
   const x = mix(960, 96, d), y = mix(540, 150, d);
@@ -162,7 +164,7 @@ export function Kelp() {
 /* ---------- S5 · MovieRecom : le catalogue qui s'éteint ---------- */
 export function Movie() {
   const f = useCurrentFrame();
-  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawCatalogue(c, 1.4 + (f / 30) * 1.35, w, h), [f]);
+  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawCatalogue(c, 1.4 + (f / 30) * 1.35, w, h, CATALOGUE_DARK), [f]);
   return (
     <AbsoluteFill style={{ background: C.bg }}>
       <DrawCanvas draw={scene} />
@@ -224,7 +226,7 @@ export function Azathro() {
 /* ---------- S7 · Déserts médicaux ---------- */
 export function Genetic({ data }: { data: GeneticData }) {
   const f = useCurrentFrame();
-  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawGenetic(c, Math.min(12.6, (f / 30) * 2.3), w, h, data), [f, data]);
+  const scene = useCallback((c: CanvasRenderingContext2D, w: number, h: number) => drawGenetic(c, Math.min(12.6, (f / 30) * 2.3), w, h, data, { palette: GENETIC_DARK, layout: GENETIC_WIDE }), [f, data]);
   return (
     <AbsoluteFill style={{ background: C.bg }}>
       <DrawCanvas draw={scene} />

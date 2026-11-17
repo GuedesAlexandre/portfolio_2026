@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { SafeBoundary } from './SafeBoundary';
 import { Loader } from './loader/Loader';
 import { hasWebGL, isCompact, prefersReducedMotion } from './story/capabilities';
@@ -8,6 +8,7 @@ import { Hero } from './sections/Hero';
 import { Journey } from './sections/Journey';
 import { Manifesto } from './sections/Manifesto';
 import { Projects } from './sections/Projects';
+import { Menu } from './ui/Menu';
 import './styles/v3.css';
 
 const ParticleStage = lazy(() => import('./particles/ParticleStage').then((m) => ({ default: m.ParticleStage })));
@@ -24,8 +25,13 @@ export default function App() {
   const progress = useRef<Record<string, number>>({});
   const refs = useMemo(() => ({ manifesto, projects }), []);
   useSectionProgress(refs, progress);
-  const [show3d] = useState(() => hasWebGL() && !prefersReducedMotion());
-  const [compact] = useState(isCompact);
+  // Le premier rendu est le même qu'au build (sans 3D) pour que l'hydratation colle ; on ajuste avant l'affichage.
+  const [show3d, setShow3d] = useState(false);
+  const [compact, setCompact] = useState(false);
+  useLayoutEffect(() => {
+    setShow3d(hasWebGL() && !prefersReducedMotion());
+    setCompact(isCompact());
+  }, []);
   const [loading, setLoading] = useState(true);
   const endLoading = useCallback(() => setLoading(false), []);
   useEffect(() => {
@@ -35,7 +41,8 @@ export default function App() {
   const ready = useMemo(() => {
     let resolve3d!: () => void;
     const scene = show3d ? new Promise<void>((r) => { resolve3d = r; }) : Promise.resolve();
-    return { done: Promise.all([document.fonts?.ready ?? Promise.resolve(), scene]), resolve3d: () => resolve3d?.() };
+    const fonts = typeof document === 'undefined' ? undefined : document.fonts?.ready;
+    return { done: Promise.all([fonts ?? Promise.resolve(), scene]), resolve3d: () => resolve3d?.() };
   }, [show3d]);
   return (
     <div className={`site${show3d ? '' : ' no-3d'}`}>
@@ -49,8 +56,8 @@ export default function App() {
       {loading && <Loader whenReady={ready.done} onDone={endLoading} />}
       <header className="nav">
         <a href="#intro" className="logo" aria-label="accueil">a.</a>
-        <nav aria-label="sections"><a href="#projets">projets</a><a href="#parcours">parcours</a><a href="#contact">contact</a></nav>
       </header>
+      <Menu />
       <main>
         <Hero revealed={!loading} />
         <Manifesto ref={manifesto} />

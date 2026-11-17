@@ -1,13 +1,15 @@
 :root {
-  --bg: #0b0b0c;
-  --ink: #ede8df;
-  --dim: #5c5a57;
-  --accent: #ff6a1f;
+  --bg: #f3efe7;
+  --bg-rgb: 243 239 231;
+  --ink: #161513;
+  --ink-rgb: 22 21 19;
+  --dim: #716b62;
+  --accent: #cf2a25;
   --serif: 'Instrument Serif', 'Times New Roman', serif;
   --sans: 'Hanken Grotesk', system-ui, sans-serif;
   --hand: 'Homemade Apple', cursive;
   --gutter: clamp(16px, 4vw, 64px);
-  color-scheme: dark;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -15,8 +17,8 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0; background-color: var(--bg); color: var(--ink); font: 400 17px / 1.6 var(--sans);
   background-image:
-    linear-gradient(rgb(237 232 223 / 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(237 232 223 / 0.035) 1px, transparent 1px);
+    linear-gradient(rgb(var(--ink-rgb) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--ink-rgb) / 0.05) 1px, transparent 1px);
   background-size: 72px 72px;
 }
 a { color: inherit; text-underline-offset: 4px; }

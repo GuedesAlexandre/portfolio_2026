@@ -30,3 +30,13 @@ it('donne un moyen de contact', () => {
   expect(screen.getByRole('heading', { name: /dis bonjour/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /GitHub/ })).toBeInTheDocument();
 });
+
+it('rend l’email cliquable', () => {
+  render(<App />);
+  expect(screen.getByRole('link', { name: /@/ }).getAttribute('href')).toMatch(/^mailto:/);
+});
+
+it('n’affiche aucun emplacement de capture vide', () => {
+  render(<App />);
+  expect(screen.queryByText(/capture à fournir/i)).toBeNull();
+});

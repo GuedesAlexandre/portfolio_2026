@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "oxc", "unicorn", "import", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+
+    // Règles du React Compiler, que le projet n'utilise pas : elles signalent des mutations
+    // de refs et d'uniforms three.js voulues (le motif standard de react-three-fiber).
+    "react/immutability": "off",
+    "react/set-state-in-effect": "off",
+    "react/preserve-manual-memoization": "off",
+
+    // Les imports de CSS et de polices sont faits pour leurs effets ; les petites fonctions
+    // de test restent près de leur usage.
+    "import/no-unassigned-import": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "vitest/require-mock-type-parameters": "off"
+  },
+  "env": { "browser": true, "node": true, "es2024": true },
+  "ignorePatterns": ["dist/**", "trailer/out/**", "**/node_modules/**"]
+}

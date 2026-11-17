@@ -1,0 +1,13 @@
+{
+  "name": "Alexandre Guedes — ingénieur logiciel",
+  "short_name": "Alexandre",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f3efe7",
+  "theme_color": "#f3efe7",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "32x32", "type": "image/png" }
+  ]
+}
