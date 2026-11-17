@@ -41,7 +41,7 @@ export const PROJECTS: Project[] = [
     id: 'azathro',
     title: 'Azathro',
     context: 'Projet perso · jeu',
-    summary: 'Un jeu de cartes roguelike à l’ambiance lovecraftienne, conçu et codé de zéro en Java.',
+    summary: 'Une version lite de Balatro, le jeu de cartes roguelike, recodée de zéro en Java avec une ambiance lovecraftienne.',
     details: [
       'Moteur de jeu isolé dans une classe GameEngine.',
       'Couleurs et rangs modélisés avec des sealed interfaces et des records.',
