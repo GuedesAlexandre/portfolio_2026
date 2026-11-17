@@ -12,7 +12,7 @@ export const FULL_NAME = `${IDENTITY.givenName} ${IDENTITY.familyName}`;
 export const ROLE ='Ingénieur logiciel en alternance · BPCE SI & ESIEE Paris';
 export const TAGLINE = 'Apprenti ingénieur logiciel. Je construis des outils qui rendent la technique agréable à prendre en main.';
 export const MANIFESTO =
-  'Je prends un truc complexe et je le rends simple à manipuler. Pas en cachant la complexité : en lui donnant une forme qu’on peut attraper.';
+  'J’ai à cœur de construire des choses qui seront encore utiles demain. Pas pour briller le temps d’une démo : pour ceux qui s’en serviront vraiment.';
 export const STACK = [
   { part: 'Front', value: 'React, Angular, TypeScript' },
   { part: 'Back', value: 'Java, Spring Boot' },
