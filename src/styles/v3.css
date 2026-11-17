@@ -23,7 +23,7 @@ main, .contact { position: relative; z-index: 1; }
 .hero-down:hover, .more:hover, .contact-links a:hover { color: var(--accent); text-underline-offset: 9px; }
 
 /* ---------- Hero ---------- */
-.hero { position: relative; min-height: 100svh; display: grid; place-content: center; justify-items: center; text-align: center; padding: 120px var(--gutter) 80px; }
+.hero { position: relative; min-height: 100svh; display: grid; place-content: center; justify-items: center; text-align: center; padding: 100px var(--gutter); }
 .hero-role {
   margin: 0 0 28px; font: 500 13px / 1.5 var(--sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); text-wrap: balance;
   position: relative; z-index: 7;
@@ -151,7 +151,8 @@ main, .contact { position: relative; z-index: 1; }
 }
 
 @media (max-width: 767px) {
-  .hero { padding-top: 44vh; align-content: start; }
+  /* Centré comme sur grand écran ; marges réduites (la barre de nav fait ~70 px). */
+  .hero { padding: 88px var(--gutter) 64px; }
   .hero-role { font-size: 11px; letter-spacing: 0.1em; margin-bottom: 20px; }
   .hero-tagline { margin-top: 36px; }
   .hero .n-1 { display: none; }
