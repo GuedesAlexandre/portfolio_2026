@@ -8,6 +8,8 @@ export interface Project {
   details: string[];
   stack: string[];
   note?: string;
+  /** Dépôt public du code, affiché en lien « voir le code ». */
+  repo?: string;
 }
 
 export const PROJECTS: Project[] = [
@@ -49,6 +51,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['Java', 'sealed interfaces', 'records', 'Zen'],
     note: 'moteur fait maison',
+    repo: 'https://github.com/GuedesAlexandre/Azathro',
   },
   {
     id: 'deserts',
@@ -63,5 +66,6 @@ export const PROJECTS: Project[] = [
     ],
     stack: ['C', 'MLV', 'Python', 'GeoJSON'],
     note: '1 299 hôpitaux placés',
+    repo: 'https://github.com/GuedesAlexandre/Projet_Multidisciplinaire_S2',
   },
 ];

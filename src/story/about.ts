@@ -23,7 +23,7 @@ export const JOURNEY = [
   { when: '2025 → 2028', what: 'Cycle ingénieur à l’ESIEE Paris', how: 'Filière Informatique, Design, Architecture et Développement.' },
 ];
 export const INVENTORY = [
-  ['Machine', 'ThinkPad sous Fedora'],
+  ['Machine', 'ThinkPad sous Omarchy'],
   ['IDE', 'IntelliJ IDEA'],
   ['En ce moment', 'Kelp'],
   ['Hors écran', 'muscu, jeux vidéo, mangas, cinéma, Lovecraft'],

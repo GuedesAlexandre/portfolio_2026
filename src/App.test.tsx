@@ -28,7 +28,7 @@ it('déplie le détail de Kelp au clavier', async () => {
 it('donne un moyen de contact', () => {
   render(<App />);
   expect(screen.getByRole('heading', { name: /dis bonjour/i })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /GitHub/ })).toBeInTheDocument();
+  expect(within(document.getElementById('contact')!).getByRole('link', { name: /GitHub/ })).toBeInTheDocument();
 });
 
 it('rend l’email cliquable', () => {
@@ -39,4 +39,13 @@ it('rend l’email cliquable', () => {
 it('n’affiche aucun emplacement de capture vide', () => {
   render(<App />);
   expect(screen.queryByText(/capture à fournir/i)).toBeNull();
+});
+
+it('donne le lien GitHub des projets publics, dans un nouvel onglet', () => {
+  render(<App />);
+  const azathro = within(document.getElementById('azathro')!).getByRole('link', { name: /voir le code de Azathro sur GitHub/ });
+  expect(azathro).toHaveAttribute('href', 'https://github.com/GuedesAlexandre/Azathro');
+  expect(azathro).toHaveAttribute('rel', expect.stringContaining('noopener'));
+  expect(within(document.getElementById('deserts')!).getByRole('link', { name: /voir le code/ })).toHaveAttribute('href', 'https://github.com/GuedesAlexandre/Projet_Multidisciplinaire_S2');
+  expect(within(document.getElementById('kelp')!).queryByRole('link', { name: /voir le code/ })).toBeNull();
 });

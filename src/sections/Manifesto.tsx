@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from 'react';
 import { MANIFESTO } from '../story/about';
-import { sectionProgress } from '../story/sectionMath';
+import { litWords, stickyProgress } from '../story/sectionMath';
 
 const WORDS = MANIFESTO.split(' ');
 
@@ -11,8 +11,8 @@ export const Manifesto = forwardRef<HTMLElement>(function Manifesto(_, ref) {
     const el = (ref as React.RefObject<HTMLElement>).current;
     if (!el || matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
     const read = () => {
-      const p = sectionProgress(el.getBoundingClientRect(), innerHeight);
-      setLit(Math.round(Math.min(1, Math.max(0, (p - 0.2) / 0.5)) * WORDS.length));
+      // Les mots s'allument pendant que la phrase est collée à l'écran, pas pendant qu'elle arrive.
+      setLit(litWords(stickyProgress(el.getBoundingClientRect(), innerHeight), WORDS.length));
     };
     read();
     addEventListener('scroll', read, { passive: true });

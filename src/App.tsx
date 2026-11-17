@@ -53,7 +53,8 @@ export default function App() {
           </Suspense>
         </SafeBoundary>
       )}
-      {loading && <Loader whenReady={ready.done} onDone={endLoading} />}
+      {/* Le loader se retire seul après son fondu ; `loading` ne sert qu'à révéler le titre. */}
+      <Loader whenReady={ready.done} onDone={endLoading} />
       <header className="nav">
         <a href="#intro" className="logo" aria-label="accueil">a.</a>
       </header>

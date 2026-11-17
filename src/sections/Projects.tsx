@@ -4,6 +4,7 @@ import { KelpScene } from '../scenes/KelpScene';
 import { CatalogueScene } from '../scenes/CatalogueScene';
 import { GeneticScene } from '../scenes/GeneticScene';
 import { PROJECTS, type Project } from '../story/projects';
+import { ArrowIcon } from '../ui/ArrowIcon';
 
 const SCENES = { kelp: KelpScene, movierecom: CatalogueScene, azathro: AzathroScene, deserts: GeneticScene };
 
@@ -23,9 +24,16 @@ function ProjectBlock({ p, index }: { p: Project; index: number }) {
         {p.note && <p className="margin-note project-note" aria-hidden="true">{p.note}</p>}
         <p className="project-summary">{p.summary}</p>
         <ul className="project-stack" aria-label="stack">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
-        <button type="button" className="more" aria-expanded={open} aria-controls={`${p.id}-details`} onClick={() => setOpen((o) => !o)}>
-          {open ? 'replier' : 'lire la suite'}
-        </button>
+        <div className="project-actions">
+          <button type="button" className="more" aria-expanded={open} aria-controls={`${p.id}-details`} onClick={() => setOpen((o) => !o)}>
+            {open ? 'replier' : 'lire la suite'}
+          </button>
+          {p.repo && (
+            <a className="more project-repo" href={p.repo} target="_blank" rel="noopener noreferrer" aria-label={`voir le code de ${p.title} sur GitHub`}>
+              voir le code <ArrowIcon />
+            </a>
+          )}
+        </div>
         <ul id={`${p.id}-details`} className="project-details" hidden={!open}>
           {p.details.map((d) => <li key={d}>{d}</li>)}
         </ul>

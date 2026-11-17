@@ -57,7 +57,9 @@ export function structuredData(site?: string) {
     '@type': 'ListItem',
     position: i + 1,
     item: {
-      '@type': 'CreativeWork',
+      // Avec un dépôt public, c'est du code source : schema.org a un type et un champ pour ça.
+      '@type': p.repo ? 'SoftwareSourceCode' : 'CreativeWork',
+      codeRepository: p.repo,
       name: p.title,
       description: p.summary,
       url: at(`/#${p.id}`),

@@ -58,7 +58,9 @@ export function Loader({ whenReady, onDone, minMs = STORY_MS, maxMs = 8000 }: {
     left.current = true;
     markSeen();
     setLeaving(true);
-    setTimeout(() => { setGone(true); onDone(); }, 1100);
+    // Le titre apparaît pendant que le loader s'efface (fondu croisé), pas après.
+    onDone();
+    setTimeout(() => setGone(true), 750);
   }, [onDone]);
 
   useEffect(() => {
