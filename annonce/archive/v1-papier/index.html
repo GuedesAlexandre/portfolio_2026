@@ -1,0 +1,102 @@
+<!doctype html>
+<html
+  lang="fr"
+  data-resolution="square"
+  data-composition-variables='[{"id":"paper","type":"color","label":"Papier","default":"#f3efe7"},{"id":"ink","type":"color","label":"Encre","default":"#161513"},{"id":"accent","type":"color","label":"Accent","default":"#cf2a25"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <!-- Les vraies scènes canvas du site (src/scenes), compilées par vite.scenes.config.mjs -->
+    <script src="assets/js/scenes.js"></script>
+    <style>
+      :root {
+        --paper: #f3efe7;
+        --ink: #161513;
+        --accent: #cf2a25;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+      #paper-grid {
+        position: absolute;
+        inset: 0;
+        background-color: var(--paper);
+        background-image:
+          linear-gradient(rgb(22 21 19 / 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgb(22 21 19 / 0.05) 1px, transparent 1px);
+        background-size: 72px 72px;
+        background-position: -18px -18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="34"
+      data-width="1080"
+      data-height="1080"
+    >
+      <div id="paper-grid"></div>
+
+      <div id="intro" data-composition-id="intro" data-composition-src="compositions/intro.html"
+        data-start="0" data-duration="4.5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="manifesto" data-composition-id="manifesto" data-composition-src="compositions/manifesto.html"
+        data-start="4.5" data-duration="4.5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="kelp" data-composition-id="kelp" data-composition-src="compositions/kelp.html"
+        data-start="9" data-duration="5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="movie" data-composition-id="movie" data-composition-src="compositions/movie.html"
+        data-start="14" data-duration="5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="azathro" data-composition-id="azathro" data-composition-src="compositions/azathro.html"
+        data-start="19" data-duration="5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="deserts" data-composition-id="deserts" data-composition-src="compositions/deserts.html"
+        data-start="24" data-duration="5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+      <div id="outro" data-composition-id="outro" data-composition-src="compositions/outro.html"
+        data-start="29" data-duration="5" data-track-index="1" data-track-kind="graphics"
+        data-width="1080" data-height="1080"></div>
+
+      <!-- Musique (même piste que le trailer, licence Mixkit) -->
+      <audio id="bgm" class="clip" src="assets/audio/bgm.mp3" data-start="0" data-duration="34"
+        data-volume="0.42" data-fade-in="0.4" data-fade-out="1.8" data-track-index="2"></audio>
+
+      <!-- Bruitages Freesound CC0 : chaque son a sa cause à l'image (pic calé 1 image après) -->
+      <audio id="sfx-pen-1" class="clip" src="assets/audio/sfx/fs-277312.mp3" data-start="0.4" data-duration="1.07" data-volume="1.6" data-track-index="3"></audio>
+      <audio id="sfx-pen-2" class="clip" src="assets/audio/sfx/fs-277312.mp3" data-start="1.5" data-duration="1.07" data-volume="1.3" data-track-index="3"></audio>
+      <audio id="sfx-cut-manifesto" class="clip" src="assets/audio/sfx/fs-71852.mp3" data-start="4.1" data-duration="0.95" data-volume="0.35" data-track-index="3"></audio>
+      <audio id="sfx-cut-kelp" class="clip" src="assets/audio/sfx/fs-427823.mp3" data-start="8.82" data-duration="0.8" data-volume="0.5" data-track-index="3"></audio>
+      <audio id="sfx-cut-movie" class="clip" src="assets/audio/sfx/fs-71852.mp3" data-start="13.6" data-duration="0.95" data-volume="0.3" data-track-index="3"></audio>
+      <audio id="sfx-spotlight" class="clip" src="assets/audio/sfx/fs-71852.mp3" data-start="17.45" data-duration="0.95" data-volume="0.25" data-track-index="3"></audio>
+      <audio id="sfx-cut-azathro" class="clip" src="assets/audio/sfx/fs-402692.mp3" data-start="19" data-duration="0.87" data-volume="0.55" data-track-index="3"></audio>
+      <audio id="sfx-slam" class="clip" src="assets/audio/sfx/fs-812593.mp3" data-start="21.33" data-duration="1.5" data-volume="0.75" data-track-index="3"></audio>
+      <audio id="sfx-chip-1" class="clip" src="assets/audio/sfx/fs-201808.mp3" data-start="21.78" data-duration="0.21" data-volume="0.5" data-track-index="4"></audio>
+      <audio id="sfx-chip-2" class="clip" src="assets/audio/sfx/fs-201808.mp3" data-start="21.9" data-duration="0.21" data-volume="0.45" data-track-index="5"></audio>
+      <audio id="sfx-cut-deserts" class="clip" src="assets/audio/sfx/fs-427823.mp3" data-start="23.82" data-duration="0.8" data-volume="0.4" data-track-index="3"></audio>
+      <audio id="sfx-best" class="clip" src="assets/audio/sfx/fs-648890.mp3" data-start="27.22" data-duration="1.45" data-volume="0.4" data-track-index="4"></audio>
+      <audio id="sfx-cut-outro" class="clip" src="assets/audio/sfx/fs-71852.mp3" data-start="28.6" data-duration="0.95" data-volume="0.3" data-track-index="3"></audio>
+      <audio id="sfx-pen-3" class="clip" src="assets/audio/sfx/fs-277312.mp3" data-start="29.35" data-duration="1.07" data-volume="1.3" data-track-index="4"></audio>
+      <audio id="sfx-sparkle" class="clip" src="assets/audio/sfx/fs-402692.mp3" data-start="30.57" data-duration="0.87" data-volume="0.35" data-track-index="4"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

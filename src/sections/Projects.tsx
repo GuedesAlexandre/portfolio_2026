@@ -22,6 +22,7 @@ function ProjectBlock({ p, index }: { p: Project; index: number }) {
         </p>
         <h3 className="project-title">{p.title}</h3>
         {p.note && <p className="margin-note project-note" aria-hidden="true">{p.note}</p>}
+        <p className="project-role"><span>mon rôle</span> {p.role}</p>
         <p className="project-summary">{p.summary}</p>
         <ul className="project-stack" aria-label="stack">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
         <div className="project-actions">

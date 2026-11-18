@@ -1,0 +1,52 @@
+<template>
+  <style>
+    @font-face { font-family: "Homemade Apple"; src: url("assets/fonts/homemade-apple-latin-400-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; color: #f5f5f7; font-family: "Inter", sans-serif; }
+    .op-word { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .op-word span { font-weight: 900; font-size: 190px; letter-spacing: -0.055em; line-height: 1; }
+    .grad { background: linear-gradient(95deg, #ffb36b 0%, #ff5a4e 42%, #e2337f 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 0.06em 0.08em; }
+    #op-sig-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #op-sig { width: 840px; height: auto; overflow: visible; }
+    #op-sig path { fill: #f5f5f7; }
+    #op-role { margin-top: 44px; font-weight: 700; font-size: 34px; letter-spacing: -0.01em; color: #86868b; }
+  </style>
+  <div id="root" data-composition-id="open" data-width="1080" data-height="1080">
+    <div id="op-w1" class="op-word"><span id="op-w1-t">Nouveau.</span></div>
+    <div id="op-w2" class="op-word"><span id="op-w2-t" class="grad">Portfolio.</span></div>
+    <div id="op-sig-wrap">
+      <svg id="op-sig" viewBox="0 0 1191 275" aria-label="Alexandre">
+        <defs><clipPath id="op-sig-clip"><rect id="op-sig-rect" x="0" y="-40" width="0" height="360" /></clipPath></defs>
+        <g id="op-sig-glyphs" clip-path="url(#op-sig-clip)"></g>
+      </svg>
+      <p id="op-role">Ingénieur logiciel en alternance.</p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      // La vraie signature du loader du site (src/loader/signature.ts)
+      var g = document.getElementById("op-sig-glyphs");
+      window.Portfolio.SIGNATURE.glyphs.forEach(function (d) {
+        var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        p.setAttribute("d", d);
+        g.appendChild(p);
+      });
+      var tl = gsap.timeline({ paused: true });
+      // « Nouveau. » déjà à l'écran à la frame 0 (vignette), il se resserre doucement
+      tl.fromTo("#op-w1-t", { scale: 1.06, opacity: 1 }, { scale: 1, duration: 1.5, ease: "power2.out" }, 0);
+      tl.set("#op-w1", { opacity: 1 }, 0);
+      tl.set("#op-w2", { opacity: 0 }, 0);
+      tl.set("#op-sig-wrap", { opacity: 0, scale: 1 }, 0);
+      tl.to("#op-w1", { opacity: 0, duration: 0.01 }, 1.535);
+      // Coupe sur le temps : « Portfolio. »
+      tl.to("#op-w2", { opacity: 1, duration: 0.01 }, 1.535);
+      tl.fromTo("#op-w2-t", { scale: 1.08, filter: "blur(10px)" }, { scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 1.535);
+      tl.to("#op-w2", { opacity: 0, duration: 0.01 }, 3.015);
+      // La signature s'écrit
+      tl.to("#op-sig-wrap", { opacity: 1, duration: 0.01 }, 3.015);
+      tl.fromTo("#op-sig-rect", { attr: { width: 0 } }, { attr: { width: 1191 }, duration: 1.5, ease: "power1.inOut" }, 3.05);
+      tl.fromTo("#op-role", { y: 18, opacity: 0, filter: "blur(8px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 3.9);
+      tl.to("#op-sig-wrap", { scale: 0.94, opacity: 0, duration: 0.35, ease: "power2.in" }, 5.6);
+      window.__timelines["open"] = tl;
+    })();
+  </script>
+</template>

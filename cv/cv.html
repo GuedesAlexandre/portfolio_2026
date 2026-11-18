@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>CV — Alexandre Guedes</title>
+<style>
+  @font-face { font-family: 'Instrument Serif'; src: url('../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2') format('woff2'); font-style: normal; }
+  @font-face { font-family: 'Instrument Serif'; src: url('../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2') format('woff2'); font-style: italic; }
+  @font-face { font-family: 'Hanken Grotesk'; src: url('../node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-400-normal.woff2') format('woff2'); font-weight: 400; }
+  @font-face { font-family: 'Hanken Grotesk'; src: url('../node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-500-normal.woff2') format('woff2'); font-weight: 500; }
+  @font-face { font-family: 'Hanken Grotesk'; src: url('../node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-600-normal.woff2') format('woff2'); font-weight: 600; }
+
+  :root { --bg: #f3efe7; --ink: #161513; --dim: #716b62; --rule: #d9d2c5; --accent: #cf2a25;
+          --serif: 'Instrument Serif', serif; --sans: 'Hanken Grotesk', sans-serif; }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--ink); font: 400 9.1pt / 1.45 var(--sans);
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; display: grid;
+          grid-template-rows: auto 1fr auto; overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+
+  header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 8mm;
+           padding-bottom: 6mm; border-bottom: 1px solid var(--ink); }
+  h1 { margin: 0; font: 400 40pt / 0.9 var(--serif); letter-spacing: -0.02em; }
+  h1 .dot { color: var(--accent); }
+  .role { margin: 3mm 0 0; font: 400 italic 13pt / 1.2 var(--serif); }
+  .contact { margin: 0; padding: 0; list-style: none; text-align: right; color: var(--dim); font-size: 8.4pt; line-height: 1.6; }
+  .contact strong { color: var(--ink); font-weight: 500; }
+
+  .pitch { grid-column: 1 / -1; margin: 5mm 0 0; max-width: 165mm; font-size: 9.6pt; }
+
+  main { display: grid; grid-template-columns: 1fr 58mm; gap: 9mm; padding-top: 6mm; }
+  h2 { margin: 0 0 3mm; font: 400 italic 15pt / 1 var(--serif); display: flex; align-items: baseline; gap: 3mm; }
+  h2::after { content: ''; flex: 1; border-bottom: 1px solid var(--rule); transform: translateY(-1.2mm); }
+  section + section { margin-top: 5.5mm; }
+
+  .job, .project, .school { break-inside: avoid; }
+  .job + .job, .project + .project, .school + .school { margin-top: 3.4mm; }
+  .head { display: flex; justify-content: space-between; gap: 4mm; align-items: baseline; }
+  .head b { font-weight: 600; font-size: 9.8pt; }
+  .when { color: var(--dim); font-size: 8.2pt; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .sub { color: var(--dim); font-size: 8.4pt; }
+  .steps { margin: 1.6mm 0 1.8mm; padding: 0; list-style: none; }
+  .steps li { display: flex; justify-content: space-between; gap: 4mm; }
+  .steps li span:first-child { font-weight: 500; }
+  ul.bul { margin: 1mm 0 0; padding-left: 3.6mm; }
+  ul.bul li { margin: 0.4mm 0; }
+  ul.bul li::marker { color: var(--accent); }
+  p { margin: 1mm 0 0; }
+
+  .project .role-line { font: 400 italic 9.6pt var(--serif); color: var(--dim); }
+  .stack { color: var(--dim); font-size: 8.1pt; margin-top: 0.8mm; }
+
+  .major { color: var(--accent); font-weight: 500; }
+  aside .school b { font-weight: 600; display: block; }
+  dl { margin: 0; }
+  dl div + div { margin-top: 2.4mm; }
+  dt { font: 400 italic 10.5pt / 1.1 var(--serif); color: var(--dim); }
+  dd { margin: 0.6mm 0 0; }
+
+  footer { display: flex; justify-content: space-between; align-items: end; padding-top: 4mm;
+           border-top: 1px solid var(--rule); color: var(--dim); font-size: 8pt; }
+  footer .site { font: 400 italic 11pt var(--serif); color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div>
+      <h1>Alexandre Guedes<span class="dot">.</span></h1>
+      <p class="role">Apprenti ingénieur logiciel · BPCE SI &amp; ESIEE Paris</p>
+    </div>
+    <ul class="contact">
+      <li><strong><a href="mailto:alexandreguedes77600@gmail.com">alexandreguedes77600@gmail.com</a></strong></li>
+      <li><a href="https://www.alexandreguedes.dev">alexandreguedes.dev</a></li>
+      <li><a href="https://github.com/GuedesAlexandre">github.com/GuedesAlexandre</a></li>
+      <li><a href="https://www.linkedin.com/in/alexandre-guedesmmi/">linkedin.com/in/alexandre-guedesmmi</a></li>
+      <li>Bussy-Saint-Georges (77)</li>
+    </ul>
+    <p class="pitch">Apprenti ingénieur logiciel à l’ESIEE Paris, en alternance chez BPCE Solutions Informatiques. Je conçois des microservices Java / Spring Boot et des interfaces Angular, déployés en CI/CD sur Kubernetes et OpenShift. J’adore construire et coder, surtout des outils qui rendent la technique agréable à prendre en main.</p>
+  </header>
+
+  <main>
+    <div>
+      <section>
+        <h2>Expérience</h2>
+        <div class="job">
+          <div class="head"><b>BPCE Solutions Informatiques</b><span class="when">avr. 2024 → aujourd’hui</span></div>
+          <div class="sub">Charenton-le-Pont</div>
+          <ul class="steps">
+            <li><span>Ingénieur logiciel, en alternance</span><span class="when">sept. 2025 →</span></li>
+            <li><span>Développeur full stack, en alternance</span><span class="when">sept. 2024 → sept. 2025</span></li>
+            <li><span>Stagiaire développeur API DevOps</span><span class="when">avr. → sept. 2024</span></li>
+          </ul>
+          <ul class="bul">
+            <li>Conception et développement de microservices Java / Spring Boot.</li>
+            <li>Interfaces web en Angular et TypeScript.</li>
+            <li>Déploiement en CI/CD avec Jenkins, sur Kubernetes et Red Hat OpenShift.</li>
+            <li>Modernisation d’applications Spring Boot et mise en place d’observabilité.</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="head"><b>AZApp</b> <span class="when">juin → août 2023</span></div>
+          <div class="sub">Intégrateur web · Champs-sur-Marne</div>
+          <p>Intégration de sites WordPress, développement de modules PHP côté back, maintenance de sécurité et résolution de bugs front comme back.</p>
+        </div>
+        <div class="job">
+          <div class="head"><b>E.Leclerc</b> <span class="when">sept. 2023 → mars 2024</span></div>
+          <div class="sub">Employé rayon fruits et légumes · Montévrain</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Projets</h2>
+        <div class="project">
+          <div class="head"><b>Kelp</b><span class="role-line">seul, de la conception au code · en cours</span></div>
+          <p>Monter du Kubernetes sans kubectl ni YAML : on crée des conteneurs dans une interface visuelle, on les relie, Kelp provisionne cluster, namespaces et déploiements.</p>
+          <div class="stack">Spring Boot · Fabric8 · docker-java · WebSocket · DDD</div>
+        </div>
+        <div class="project">
+          <div class="head"><b>Déserts médicaux</b><span class="role-line">chef de projet et développeur · ESIEE</span></div>
+          <p>Algorithme génétique en C qui place des hôpitaux parmi 34 437 communes pour que chacun en ait un à moins de 10 km au moindre coût : 1 299 hôpitaux retenus.</p>
+          <div class="stack">C · MLV · Python · GeoJSON</div>
+        </div>
+        <div class="project">
+          <div class="head"><b>MovieRecom</b><span class="role-line">développeur · ESIEE, en binôme</span></div>
+          <p>Recommandation de films par conversation avec un LLM local (Qwen2.5-7B via llama.cpp intégré en Java).</p>
+          <div class="stack">Helidon SE · jOOQ · SQLite · Svelte</div>
+        </div>
+        <div class="project">
+          <div class="head"><b>Azathro</b><span class="role-line">développeur, logique fonctionnelle du jeu</span></div>
+          <p>Jeu de cartes roguelike inspiré de Balatro, recodé de zéro en Java, ambiance lovecraftienne.</p>
+          <div class="stack">Java · sealed interfaces · records · Zen</div>
+        </div>
+      </section>
+    </div>
+
+    <aside>
+      <section>
+        <h2>Formation</h2>
+        <div class="school"><b>ESIEE Paris</b>Diplôme d’ingénieur, Informatique, Architecture, Design et Développement<div class="when">2025 → 2028 · en alternance</div></div>
+        <div class="school"><b>Université Gustave Eiffel</b>BUT Métiers du Multimédia et de l’Internet<div class="major">Major de promotion</div><div class="when">2022 → 2025</div></div>
+        <div class="school"><b>Université Gustave Eiffel</b>BUT Informatique, 1<sup>re</sup> année<div class="when">2021 → 2022</div></div>
+        <div class="school"><b>Lycée Martin Luther King</b>Bac STI2D<div class="when">2021</div></div>
+      </section>
+
+      <section>
+        <h2>Compétences</h2>
+        <dl>
+          <div><dt>Back</dt><dd>Java, Spring Boot, Helidon SE, C, PHP</dd></div>
+          <div><dt>Front</dt><dd>Angular, React, TypeScript, Svelte</dd></div>
+          <div><dt>Infra &amp; CI/CD</dt><dd>Docker, Podman, Kubernetes, OpenShift, Jenkins</dd></div>
+          <div><dt>Données</dt><dd>SQL, PostgreSQL, SQLite, jOOQ</dd></div>
+          <div><dt>Outils</dt><dd>Git, IntelliJ IDEA, Linux</dd></div>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Langues</h2>
+        <p>Français, anglais, portugais.</p>
+      </section>
+
+      <section>
+        <h2>Hors écran</h2>
+        <p>Muscu, jeux vidéo, mangas, cinéma, Lovecraft.</p>
+      </section>
+    </aside>
+  </main>
+
+  <footer>
+    <span>Le reste, en images : <span class="site">alexandreguedes.dev</span></span>
+    <span>CV · novembre 2026</span>
+  </footer>
+</div>
+</body>
+</html>

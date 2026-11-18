@@ -1,0 +1,35 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; color: #f5f5f7; font-family: "Inter", sans-serif; overflow: hidden; }
+    #pr-glow { position: absolute; left: 50%; top: 700px; width: 1300px; height: 800px; margin: -400px 0 0 -650px; background: radial-gradient(closest-side, rgb(255 110 80 / 0.34), rgb(226 51 127 / 0.14) 55%, transparent 100%); }
+    #pr-head { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-weight: 900; font-size: 82px; line-height: 1.04; letter-spacing: -0.045em; }
+    #pr-l2 { color: #86868b; }
+    #pr-window { position: absolute; left: 70px; top: 420px; width: 940px; height: 588px; border-radius: 26px; overflow: hidden; background: #f3efe7; box-shadow: 0 40px 120px rgb(0 0 0 / 0.7), 0 0 0 1px rgb(255 255 255 / 0.12); }
+    #pr-video { position: absolute; left: 0; top: 0; width: 940px; height: 588px; object-fit: cover; }
+    #pr-sheen { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 0.22) 50%, transparent 65%); }
+  </style>
+  <div id="root" data-composition-id="product" data-width="1080" data-height="1080">
+    <div id="pr-glow" data-layout-ignore></div>
+    <h2 id="pr-head"><span id="pr-l1">Un portfolio.</span><br /><span id="pr-l2">Écrit comme un carnet.</span></h2>
+    <div id="pr-window">
+      <!-- Défilement réel du site, capturé image par image -->
+      <video id="pr-video" class="clip" src="assets/video/site-scroll.mp4" data-start="0" data-duration="7.87" data-playback-rate="1.45" muted playsinline></video>
+      <div id="pr-sheen"></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pr-glow", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 1.6, ease: "power2.out" }, 0);
+      tl.fromTo("#pr-l1", { y: 30, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 0.05);
+      tl.fromTo("#pr-l2", { y: 30, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 0.5);
+      // Le site monte dans la lumière, puis une poussée lente
+      tl.fromTo("#pr-window", { y: 420, scale: 0.86 }, { y: 0, scale: 1, duration: 1.4, ease: "expo.out" }, 0.25);
+      tl.to("#pr-window", { scale: 1.05, y: -12, duration: 5.9, ease: "sine.inOut" }, 1.65);
+      tl.fromTo("#pr-sheen", { xPercent: -120 }, { xPercent: 120, duration: 1.3, ease: "power2.inOut" }, 1.2);
+      tl.fromTo("#pr-head", { opacity: 1 }, { opacity: 0, y: -20, duration: 0.3, ease: "power2.in" }, 7.5);
+      tl.fromTo("#pr-window", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power2.in" }, 7.5);
+      window.__timelines["product"] = tl;
+    })();
+  </script>
+</template>

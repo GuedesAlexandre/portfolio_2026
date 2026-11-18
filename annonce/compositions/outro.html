@@ -1,0 +1,31 @@
+<template>
+  <style>
+    @font-face { font-family: "Homemade Apple"; src: url("assets/fonts/homemade-apple-latin-400-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; color: #f5f5f7; font-family: "Inter", sans-serif; }
+    #ou-stack { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #ou-mark { font: 400 250px/1.1 "Homemade Apple", cursive; padding: 0 50px; color: #f5f5f7; }
+    #ou-dot { background: linear-gradient(95deg, #ffb36b, #ff5a4e 50%, #e2337f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #ou-url { margin-top: 20px; font-weight: 700; font-size: 72px; letter-spacing: -0.035em; }
+    #ou-role { margin-top: 22px; font-weight: 700; font-size: 34px; letter-spacing: -0.01em; color: #86868b; }
+    #ou-black { position: absolute; inset: 0; background: #000; }
+  </style>
+  <div id="root" data-composition-id="outro" data-width="1080" data-height="1080">
+    <div id="ou-stack">
+      <p id="ou-mark">a<span id="ou-dot">.</span></p>
+      <p id="ou-url">alexandreguedes.dev</p>
+      <p id="ou-role">Ingénieur logiciel en alternance.</p>
+    </div>
+    <div id="ou-black"></div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      // Le « a. » du site s'écrit, puis l'adresse
+      tl.fromTo("#ou-mark", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power1.inOut" }, 0.35);
+      tl.fromTo("#ou-url", { y: 26, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 1.4);
+      tl.fromTo("#ou-role", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 1.85);
+      tl.fromTo("#ou-black", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 4.3);
+      window.__timelines["outro"] = tl;
+    })();
+  </script>
+</template>

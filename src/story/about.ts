@@ -19,8 +19,10 @@ export const STACK = [
   { part: 'Infra', value: 'Podman, Kubernetes' },
 ];
 export const JOURNEY = [
-  { when: '2025 →', what: 'Apprenti ingénieur logiciel chez BPCE Solutions Informatiques, DSI de BPCE Factor', how: 'Modernisation d’applications Spring Boot et observabilité.' },
-  { when: '2025 → 2028', what: 'Cycle ingénieur à l’ESIEE Paris', how: 'Filière Informatique, Design, Architecture et Développement.' },
+  { when: '2025 → 2028', what: 'Cycle ingénieur à l’ESIEE Paris', how: 'Filière Informatique, Design, Architecture et Développement, en alternance.' },
+  { when: '2024 →', what: 'BPCE Solutions Informatiques, DSI de BPCE Factor', how: 'Stage API DevOps en avril 2024, puis alternance : développeur full stack, ingénieur logiciel depuis 2025. Microservices Spring Boot, interfaces Angular, CI/CD, modernisation et observabilité.' },
+  { when: '2023', what: 'Intégrateur web chez AZApp', how: 'Un été sur des sites WordPress : modules, développements PHP côté back et maintenance de sécurité.' },
+  { when: '2022 → 2025', what: 'BUT Métiers du Multimédia et de l’Internet', how: 'Université Gustave Eiffel, major de promotion, après une première année de BUT Informatique.' },
 ];
 export const INVENTORY = [
   ['Machine', 'ThinkPad sous Omarchy'],

@@ -1,0 +1,46 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; color: #f5f5f7; font-family: "Inter", sans-serif; overflow: hidden; }
+    #movie-eyebrow { position: absolute; left: 0; right: 0; top: 112px; text-align: center; font-weight: 700; font-size: 36px; letter-spacing: -0.01em; }
+    #movie-eyebrow span { background: linear-gradient(95deg, #ffb36b, #ff5a4e 50%, #e2337f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #movie-head { position: absolute; left: 0; right: 0; top: 172px; text-align: center; font-weight: 900; font-size: 78px; line-height: 1.04; letter-spacing: -0.045em; white-space: nowrap; }
+    #movie-l2 { color: #86868b; }
+    #movie-card { position: absolute; left: 80px; top: 420px; width: 920px; height: 500px; border-radius: 28px; overflow: hidden; background: #0b0b0c; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 30px 90px rgb(0 0 0 / 0.8); }
+    #movie-stack { position: absolute; left: 0; right: 0; top: 958px; text-align: center; font-weight: 700; font-size: 28px; color: #6e6e73; }
+    #movie-canvas { position: absolute; left: 0; top: 0; width: 920px; height: 500px; }
+  </style>
+  <div id="root" data-composition-id="movie" data-width="1080" data-height="1080">
+    <div id="movie-all">
+      <p id="movie-eyebrow"><span>MovieRecom</span></p>
+      <h2 id="movie-head"><span id="movie-l1">Le film du soir.</span><br /><span id="movie-l2">Choisi par un LLM local.</span></h2>
+      <div id="movie-card">
+        <canvas id="movie-canvas" width="1840" height="1000"></canvas>
+      </div>
+      <p id="movie-stack">Helidon · jOOQ · Svelte · Qwen2.5</p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var cv = document.getElementById("movie-canvas");
+      var ctx = cv.getContext("2d");
+      var clock = { t: 4.5 };
+      function draw() {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        ctx.setTransform(2, 0, 0, 2, 0, 0);
+        window.Portfolio.drawCatalogueDark(ctx, clock.t, 920, 500);
+      }
+      tl.fromTo(clock, { t: 4.5 }, { t: 9.6, duration: 3.93, ease: "none", onUpdate: draw, immediateRender: false }, 0);
+      draw();
+      tl.fromTo("#movie-eyebrow", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0);
+      tl.fromTo("#movie-l1", { y: 34, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 0.06);
+      tl.fromTo("#movie-l2", { y: 34, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 0.28);
+      tl.fromTo("#movie-card", { y: 260, scale: 0.9, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 1.0, ease: "expo.out" }, 0.4);
+      tl.to("#movie-card", { scale: 1.035, duration: 2.53, ease: "sine.inOut" }, 1.4);
+      tl.fromTo("#movie-stack", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.9);
+      tl.fromTo("#movie-all", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, 3.63);
+      window.__timelines["movie"] = tl;
+    })();
+  </script>
+</template>

@@ -80,6 +80,8 @@ main, .contact { position: relative; z-index: 1; }
 .project-index { margin-right: 14px; font: 400 italic 17px var(--serif); color: var(--ink); }
 .project-title { margin: 0 0 14px; font: 400 clamp(60px, 6.6vw, 116px) / 0.9 var(--serif); letter-spacing: -0.02em; }
 .project-note { position: static; display: inline-block; margin: 0 0 20px 4px; }
+.project-role { margin: 0 0 12px; font-size: 15px; color: var(--ink); }
+.project-role span { margin-right: 8px; font: 400 italic 17px var(--serif); color: var(--dim); }
 .project-summary { margin: 0 0 20px; color: var(--ink); max-width: 46ch; }
 .project-stack { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 0; margin: 0 0 22px; font-size: 14px; color: var(--dim); }
 .project-stack li + li::before { content: '·'; margin-right: 14px; }

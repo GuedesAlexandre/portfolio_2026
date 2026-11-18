@@ -7,6 +7,8 @@ export interface Project {
   summary: string;
   details: string[];
   stack: string[];
+  /** Ce que j'ai tenu dans le projet, affiché sous le titre. */
+  role: string;
   note?: string;
   /** Dépôt public du code, affiché en lien « voir le code ». */
   repo?: string;
@@ -17,6 +19,7 @@ export const PROJECTS: Project[] = [
     id: 'kelp',
     title: 'Kelp',
     context: 'Projet perso · en cours',
+    role: 'seul sur le projet, de la conception au code',
     summary: 'Monter du Kubernetes sans jamais toucher à kubectl ni au YAML. On crée des conteneurs dans une interface visuelle, on les relie en tirant des câbles, et Kelp monte en coulisses le cluster, les namespaces et les déploiements.',
     details: [
       'Le Void, l’écran central : chaque conteneur est une alvéole ; on choisit l’image et sa configuration, puis on connecte les alvéoles.',
@@ -31,6 +34,7 @@ export const PROJECTS: Project[] = [
     id: 'movierecom',
     title: 'MovieRecom',
     context: 'ESIEE Paris · en binôme',
+    role: 'développeur',
     summary: 'Un « conseil du soir » : plutôt qu’un catalogue à faire défiler, on décrit son envie du moment et un LLM local négocie avec toi le film à regarder.',
     details: [
       'llama.cpp intégré en Java via java-llama.cpp, modèle Qwen2.5-7B-Instruct au format GGUF, sur CPU comme sur GPU.',
@@ -43,6 +47,7 @@ export const PROJECTS: Project[] = [
     id: 'azathro',
     title: 'Azathro',
     context: 'Projet perso · jeu',
+    role: 'développeur, sur la logique fonctionnelle du jeu',
     summary: 'Une version lite de Balatro, le jeu de cartes roguelike, recodée de zéro en Java avec une ambiance lovecraftienne.',
     details: [
       'Moteur de jeu isolé dans une classe GameEngine.',
@@ -57,6 +62,7 @@ export const PROJECTS: Project[] = [
     id: 'deserts',
     title: 'Déserts médicaux',
     context: 'ESIEE Paris · projet pluridisciplinaire · en équipe',
+    role: 'chef de projet et développeur',
     summary: 'Où construire les hôpitaux de France ? Un algorithme génétique en C choisit, parmi les 34 437 communes de métropole, où placer des hôpitaux pour que chacun en ait un à moins de 10 km, au moindre coût.',
     details: [
       'Fitness : population couverte, moins 5 000 points par hôpital construit, plus un bonus pour les CHRU des grandes villes.',

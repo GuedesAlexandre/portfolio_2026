@@ -1,0 +1,56 @@
+<template>
+  <style>
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); font-style: normal; }
+    @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); font-style: italic; }
+    @font-face { font-family: "Hanken Grotesk"; src: url("assets/fonts/hanken-grotesk-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "Hanken Grotesk"; src: url("assets/fonts/hanken-grotesk-latin-500-normal.woff2") format("woff2"); font-weight: 500; }
+    @font-face { font-family: "Homemade Apple"; src: url("assets/fonts/homemade-apple-latin-400-normal.woff2") format("woff2"); }
+    #root { position: absolute; inset: 0; color: #161513; }
+    #kelp-panel { position: absolute; left: 54px; top: 54px; width: 972px; height: 580px; overflow: hidden; border: 1.5px solid rgb(22 21 19 / 0.14); background: #f3efe7; }
+    #kelp-meta { position: absolute; left: 108px; top: 664px; display: flex; gap: 22px; align-items: baseline; }
+    #kelp-num { font: italic 400 34px/1 "Instrument Serif", serif; color: #cf2a25; }
+    #kelp-ctx { font: 500 28px/1 "Hanken Grotesk", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: #716b62; }
+    #kelp-title-mask { position: absolute; left: 100px; top: 698px; overflow: hidden; padding: 0 8px 14px; }
+    #kelp-title { font: 400 150px/1 "Instrument Serif", serif; letter-spacing: -0.03em; white-space: nowrap; }
+    #kelp-hook { position: absolute; left: 108px; right: 108px; top: 858px; font: 400 38px/1.3 "Hanken Grotesk", sans-serif; color: #161513; }
+    #kelp-stack { position: absolute; left: 108px; top: 978px; font: 500 28px/1 "Hanken Grotesk", sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #716b62; }
+    #kelp-note { position: absolute; right: 84px; top: 596px; padding: 6px 18px 2px; background: #f3efe7; box-shadow: 0 2px 10px rgb(22 21 19 / 0.12); font: 400 30px/1.3 "Homemade Apple", cursive; color: #cf2a25; transform: rotate(-4deg); white-space: nowrap; }
+    #kelp-canvas { position: absolute; inset: 0; width: 972px; height: 580px; }
+  </style>
+  <div id="root" data-composition-id="kelp" data-width="1080" data-height="1080">
+    <div id="kelp-all">
+      <div id="kelp-panel">
+        <canvas id="kelp-canvas" width="1944" height="1160"></canvas>
+      </div>
+      <div id="kelp-meta"><span id="kelp-num">01 / 04</span><span id="kelp-ctx">Projet perso · en cours</span></div>
+      <div id="kelp-title-mask"><h2 id="kelp-title">Kelp</h2></div>
+      <p id="kelp-hook">Kubernetes à la souris : on relie des conteneurs, Kelp déploie.</p>
+      <p id="kelp-stack">Spring Boot · Fabric8 · WebSocket</p>
+      <p id="kelp-note">zéro ligne de YAML</p>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var cv = document.getElementById("kelp-canvas");
+      var ctx = cv.getContext("2d");
+      var clock = { t: 0.3 };
+      function draw() {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        ctx.setTransform(2, 0, 0, 2, 0, 0);
+        window.Portfolio.drawKelp(ctx, clock.t, 972, 580);
+      }
+      tl.fromTo(clock, { t: 0.3 }, { t: 10.6, duration: 5, ease: "none", onUpdate: draw, immediateRender: false }, 0);
+      draw();
+      tl.fromTo("#kelp-panel", { clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0% 0 0 0)", duration: 0.6, ease: "power3.inOut" }, 0);
+      tl.fromTo("#kelp-meta", { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 0.3);
+      tl.fromTo("#kelp-title", { yPercent: 105 }, { yPercent: 0, duration: 0.7, ease: "expo.out" }, 0.35);
+      tl.fromTo("#kelp-hook", { y: 16, opacity: 0, filter: "blur(6px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, 0.6);
+      tl.fromTo("#kelp-stack", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.9);
+      tl.fromTo("#kelp-note", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "power1.inOut" }, 1.3);
+      tl.fromTo("#kelp-all", { y: 0, opacity: 1 }, { y: -40, opacity: 0, duration: 0.35, ease: "power2.in" }, 4.62);
+      window.__timelines["kelp"] = tl;
+    })();
+  </script>
+</template>
